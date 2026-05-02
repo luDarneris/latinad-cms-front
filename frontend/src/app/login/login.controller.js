@@ -1,5 +1,5 @@
 import angular from "angular";
-import logoCms from "../../../assets/logo-cms.svg";
+import logoCms from "../../assets/logo-cms.svg";
 
 function LoginController($scope) {
   $scope.logoCms = logoCms;

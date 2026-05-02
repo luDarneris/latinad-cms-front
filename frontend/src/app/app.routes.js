@@ -1,6 +1,6 @@
 import angular from "angular";
-import loginTemplate from "../controllers/login/login.template.html?raw";
-import shellTemplate from "../controllers/shell/shell.template.html?raw";
+import dashboardTemplate from "./dashboard/dashboard.html?raw";
+import loginTemplate from "./login/login.html?raw";
 
 angular.module("latinadCmsApp").config(function ($stateProvider, $urlRouterProvider) {
   $stateProvider
@@ -14,8 +14,8 @@ angular.module("latinadCmsApp").config(function ($stateProvider, $urlRouterProvi
     })
     .state("app", {
       url: "/app",
-      controller: "ShellController",
-      template: shellTemplate,
+      controller: "DashboardController",
+      template: dashboardTemplate,
       data: {
         requiresAuth: true
       }
