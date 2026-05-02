@@ -1,1 +1,50 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
+
+@theme {
+  /* Brand */
+  --color-brand: #62a8ea;
+  --color-brand-light: #8ed1fc;
+  --color-brand-soft: #eef9ff;
+  --color-brand-hover: #4b96dc;
+
+  /* Neutral */
+  --color-black: #000000;
+  --color-white: #ffffff;
+  --color-gray: #abb8c3;
+  --color-gray-light: #eef2f5;
+  --color-gray-dark: #5f6f7c;
+
+  /* Feedback */
+  --color-danger: #cf2e2e;
+  --color-danger-soft: #fff0f0;
+
+  --color-warn: #ff6900;
+  --color-warn-soft: #fff4e8;
+
+  --color-alert: #fcb900;
+  --color-alert-soft: #fff8df;
+
+  --color-success: #00d084;
+  --color-success-soft: #e8fff6;
+  --color-success-light: #7bdcb5;
+
+  /* App */
+  --color-bg: #f6f9fb;
+  --color-surface: #ffffff;
+  --color-muted: #eef2f5;
+  --color-border: #d7e0e7;
+
+  --color-text: #000000;
+  --color-text-muted: #5f6f7c;
+  --color-text-invert: #ffffff;
+
+  --font-sans: "Poppins", Arial, Helvetica, sans-serif;
+}
+
+@layer components {
+  app-button,
+  app-input {
+    display: block;
+  }
+}

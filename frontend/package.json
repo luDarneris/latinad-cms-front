@@ -14,6 +14,7 @@
     "vite": "^8.0.10"
   },
   "dependencies": {
+    "@uirouter/angularjs": "^1.1.2",
     "angular": "^1.8.3"
   }
 }

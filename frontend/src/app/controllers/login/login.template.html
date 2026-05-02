@@ -1,0 +1,36 @@
+<main class="flex min-h-screen items-center justify-center bg-brand px-4 py-8">
+  <section class="w-full max-w-md rounded-lg bg-surface p-6 shadow-sm md:p-8">
+    <img class="mx-auto h-7 w-auto" ng-src="{{logoCms}}" alt="LatinAd CMS">
+    <h1 class="mt-2 text-2xl font-semibold text-text">Iniciar sesion</h1>
+    <p class="mt-2 text-sm text-text-muted">
+      Accede para administrar contenidos.
+    </p>
+
+    <form class="mt-6 space-y-4" name="loginForm" novalidate>
+      <app-input
+        label="Usuario"
+        name="username"
+        placeholder="Ingresá tu usuario"
+        autocomplete="username"
+        model="credentials.username"
+        required="true"
+        invalid="loginForm.username.$error.required && (loginForm.username.$touched || loginForm.$submitted)"
+        error="loginForm.username.$error.required && (loginForm.username.$touched || loginForm.$submitted) ? 'El usuario es requerido' : ''">
+      </app-input>
+
+      <app-input
+        label="Contraseña"
+        type="password"
+        name="password"
+        placeholder="Ingresá tu contraseña"
+        autocomplete="current-password"
+        model="credentials.password"
+        required="true"
+        invalid="loginForm.password.$error.required && (loginForm.password.$touched || loginForm.$submitted)"
+        error="loginForm.password.$error.required && (loginForm.password.$touched || loginForm.$submitted) ? 'La contraseña es requerida' : ''">
+      </app-input>
+
+      <app-button label="Ingresar" type="submit"></app-button>
+    </form>
+  </section>
+</main>
