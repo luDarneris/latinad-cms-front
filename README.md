@@ -54,11 +54,12 @@ npm run dev
 
 ## Decisiones de stack
 
-Decidí trabajar con AngularJS 1.x tomando el ejercicio tambien como una introducción al framework. No tenía experiencia previa con AngularJS, así que fue un desafio extra, pero me pareció una buena oportunidad para ubicarme en sus características generales y entender mejor una base parecida a la que usa el CMS real de LatinAd.
+Decidí trabajar con AngularJS 1.x tomando el ejercicio tambien como una introducción al framework. No tenía experiencia previa con AngularJS, así que fue un desafio extra, pero me pareció una buena oportunidad para ubicarme en sus características generales.
 
-La estructura la definí investigando formas habituales de organizar aplicaciones AngularJS y además, analizando el HTML del CMS original para entender como se suele trabajar en ese tipo de proyecto. A partir de eso mantuve una separacion similar a nivel de aplicación, pero adaptada al uso de Vite para aprovechar un setup más simple para desarrollo.
+Estructuré en principio el proyecto en capas, que por lo que investigué es lo más común pero no me resultó cómodo, terminé eligiendo una estructura organizada por funcionalidad, porque en general es mucho más facil ubicarse entre carpetas y además sea el tipo de proyecto que sea, lo hace más escalable y fácil de mantener.
 
-Tambien uso Tailwind CSS porque es una herramienta con la que ya tengo algo de fluidez y me permite definir una paleta común, resolver responsive de forma simple con clases y evitar estilos sueltos o repetidos en distintas pantallas.
+Tambien usé Tailwind CSS porque es una herramienta con la que ya tengo algo de fluidez y me permite definir una paleta común, resolver responsive de forma simple con clases y evitar estilos sueltos o repetidos en distintas pantallas.
 
+## Decisiones de autenticacion
 
-
+A completar al final... 

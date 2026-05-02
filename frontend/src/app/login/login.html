@@ -6,7 +6,13 @@
       Accede para administrar contenidos.
     </p>
 
-    <form class="mt-6 space-y-4" name="loginForm" novalidate>
+    <p
+      class="mt-4 rounded-md border border-brand-soft bg-brand-soft px-3 py-2 text-sm text-brand"
+      ng-if="sessionMessage">
+      {{sessionMessage}}
+    </p>
+
+    <form class="mt-6 space-y-4" name="loginForm" ng-submit="submitLogin(loginForm)" novalidate>
       <app-input
         label="Usuario"
         name="username"
@@ -30,7 +36,17 @@
         error="loginForm.password.$error.required && (loginForm.password.$touched || loginForm.$submitted) ? 'La contraseña es requerida' : ''">
       </app-input>
 
-      <app-button label="Ingresar" type="submit"></app-button>
+      <p
+        class="rounded-md border border-danger bg-red-50 px-3 py-2 text-sm text-danger"
+        ng-if="loginError">
+        {{loginError}}
+      </p>
+
+      <app-button
+        label="{{isSubmitting ? 'Ingresando...' : 'Ingresar'}}"
+        type="submit"
+        disabled="isSubmitting">
+      </app-button>
     </form>
   </section>
 </main>

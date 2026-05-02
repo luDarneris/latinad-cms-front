@@ -3,7 +3,10 @@ import "./style.css";
 
 import "./app/app.module";
 import "./app/core/api.service";
+import "./app/core/auth.service";
+import "./app/core/auth.interceptor";
 import "./app/app.routes";
+import "./app/app.run";
 import "./app/shared/ui/app-button/app-button.component";
 import "./app/shared/ui/app-input/app-input.component";
 import "./app/login/login.controller";

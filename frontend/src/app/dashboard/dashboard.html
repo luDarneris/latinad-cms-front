@@ -1,32 +1,15 @@
-<div class="min-h-screen bg-bg text-text lg:grid lg:grid-cols-[240px_1fr]">
-  <aside class="hidden border-r border-border bg-surface p-4 lg:block">
-    <p class="text-lg font-semibold text-brand">LatinAd CMS</p>
-    <nav class="mt-8 space-y-1">
-      <a class="block rounded-md bg-brand-soft px-3 py-2 text-sm font-medium text-brand" href="#!/app">
-        Contenidos
-      </a>
-    </nav>
-  </aside>
+<div class="min-h-screen bg-bg text-text">
+  <header class="border-b border-border bg-surface px-4 py-4 md:px-6 lg:px-8">
+    <div class="flex items-center justify-between gap-4">
+      <span class="text-sm font-medium text-text">Estás en el Dashboard</span>
 
-  <section class="min-w-0">
-    <header class="border-b border-border bg-surface px-4 py-4 md:px-6 lg:px-8">
-      <div class="flex items-center justify-between gap-4">
-        <div>
-          <p class="text-sm text-text-muted">Panel privado</p>
-          <h1 class="text-xl font-semibold text-text">Contenidos</h1>
-        </div>
-        <button class="rounded-md border border-border px-3 py-2 text-sm font-medium text-text">
-          Salir
-        </button>
-      </div>
-    </header>
-
-    <main class="p-4 md:p-6 lg:p-8">
-      <section class="rounded-lg border border-border bg-surface p-6">
-        <p class="text-sm text-text-muted">
-          Shell autenticado preparado para las rutas privadas.
-        </p>
-      </section>
-    </main>
-  </section>
+      <app-button
+        label="Salir"
+        icon="{{signOutIcon}}"
+        icon-position="right"
+        full-width="false"
+        on-click="logout()">
+      </app-button>
+    </div>
+  </header>
 </div>

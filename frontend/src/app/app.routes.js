@@ -2,15 +2,15 @@ import angular from "angular";
 import dashboardTemplate from "./dashboard/dashboard.html?raw";
 import loginTemplate from "./login/login.html?raw";
 
-angular.module("latinadCmsApp").config(function ($stateProvider, $urlRouterProvider) {
+function AppRoutes($stateProvider, $urlRouterProvider) {
   $stateProvider
     .state("login", {
       url: "/login",
+      params: {
+        reason: null
+      },
       controller: "LoginController",
-      template: loginTemplate,
-      data: {
-        public: true
-      }
+      template: loginTemplate
     })
     .state("app", {
       url: "/app",
@@ -22,4 +22,8 @@ angular.module("latinadCmsApp").config(function ($stateProvider, $urlRouterProvi
     });
 
   $urlRouterProvider.otherwise("/login");
-});
+}
+
+AppRoutes.$inject = ["$stateProvider", "$urlRouterProvider"];
+
+angular.module("latinadCmsApp").config(AppRoutes);
