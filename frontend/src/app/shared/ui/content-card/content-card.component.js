@@ -1,6 +1,7 @@
 import angular from "angular";
 import calendarIcon from "../../../../assets/icons/calendar.svg";
 import imageIcon from "../../../../assets/icons/image.svg";
+import playIcon from "../../../../assets/icons/play.svg";
 import videoIcon from "../../../../assets/icons/video.svg";
 
 angular.module("latinadCmsApp").component("contentCard", {
@@ -12,6 +13,7 @@ angular.module("latinadCmsApp").component("contentCard", {
   controller: function () {
     this.calendarIcon = calendarIcon;
     this.imageIcon = imageIcon;
+    this.playIcon = playIcon;
     this.videoIcon = videoIcon;
 
     this.isVideo = function () {
@@ -33,6 +35,10 @@ angular.module("latinadCmsApp").component("contentCard", {
     this.getTypeIcon = function () {
       return this.isVideo() ? this.videoIcon : this.imageIcon;
     };
+
+    this.getVideoPreviewUrl = function () {
+      return "https://placehold.co/640x480/eef2f5/eef2f5?text=";
+    };
   },
   template: `
     <article
@@ -44,13 +50,18 @@ angular.module("latinadCmsApp").component("contentCard", {
           ng-src="{{$ctrl.content.url}}"
           alt="{{$ctrl.content.name}}">
 
-        <video
+        <div
           ng-if="$ctrl.isVideo()"
-          class="h-full w-full object-cover transition duration-500 ease-out group-hover:scale-105"
-          ng-src="{{$ctrl.content.url}}"
-          muted
-          preload="metadata">
-        </video>
+          class="relative h-full w-full overflow-hidden">
+          <img
+            class="h-full w-full object-cover transition duration-500 ease-out group-hover:scale-105"
+            ng-src="{{$ctrl.getVideoPreviewUrl()}}"
+            alt="{{$ctrl.content.name}}">
+
+          <span class="absolute left-1/2 top-1/2 flex size-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/70 bg-white/75 backdrop-blur">
+            <img class="size-7 opacity-80" ng-src="{{$ctrl.playIcon}}" alt="">
+          </span>
+        </div>
 
         <div class="absolute left-3 top-3 flex items-center gap-2">
           <span class="rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-text shadow-sm backdrop-blur">
