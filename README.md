@@ -50,26 +50,4 @@ npm run dev
 - AngularJS 1.8
 - Vite
 
-## Estructura frontend
 
-```txt
-frontend/
-  public/            Archivos estaticos servidos sin procesamiento
-  src/
-    app/             Modulo raiz y componente raiz de la aplicacion
-    core/            Servicios globales, configuracion e integraciones futuras
-    features/        Funcionalidades de negocio, separadas por dominio
-    shared/          Componentes, helpers y estilos reutilizables
-    assets/          Imagenes y recursos importados desde codigo
-    main.js          Punto de entrada y bootstrap de AngularJS
-    style.css        Estilos globales basicos
-  index.html         Documento HTML principal
-  vite.config.js     Configuracion de Vite
-```
-
-## Alcance actual
-
-- Repositorio autocontenido con API mock y frontend.
-- Base AngularJS configurada.
-- Estructura inicial lista para construir paso a paso.
-- Sin funcionalidades de negocio implementadas todavia.
