@@ -1,0 +1,26 @@
+{
+  "name": "latinad-cms-mock-api",
+  "version": "1.0.0",
+  "description": "Local mock API for LatinAd frontend technical challenge",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "mock-api",
+    "cms"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

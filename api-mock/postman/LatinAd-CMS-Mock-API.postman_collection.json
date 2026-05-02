@@ -1,0 +1,239 @@
+{
+  "info": {
+    "_postman_id": "5c67f261-99c7-4d85-9ec1-243032537eed",
+    "name": "LatinAd CMS Mock API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "health"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Auth - Login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var responseJson = pm.response.json();",
+              "if (responseJson && responseJson.token) {",
+              "  pm.collectionVariables.set(\"token\", responseJson.token);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin123\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        }
+      }
+    },
+    {
+      "name": "API - Get Mock Data",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/mock-data",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "mock-data"
+          ]
+        }
+      }
+    },
+    {
+      "name": "API - List Contents",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/contents?type=image&category_id=1&folder_id=3&search=banner",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "contents"
+          ],
+          "query": [
+            {
+              "key": "type",
+              "value": "image"
+            },
+            {
+              "key": "category_id",
+              "value": "1"
+            },
+            {
+              "key": "folder_id",
+              "value": "3"
+            },
+            {
+              "key": "search",
+              "value": "banner"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "API - Create Content",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var responseJson = pm.response.json();",
+              "if (responseJson && responseJson.id) {",
+              "  pm.collectionVariables.set(\"lastCreatedId\", responseJson.id);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Contenido creado desde Postman\",\n  \"type\": \"video\",\n  \"url\": \"https://samplelib.com/lib/preview/mp4/sample-5s.mp4\",\n  \"category_id\": 2,\n  \"folder_id\": 5,\n  \"has_audio\": true\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/contents",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "contents"
+          ]
+        }
+      }
+    },
+    {
+      "name": "API - Archive Contents (Bulk)",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"ids\": [1, 2, 3]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/contents/archive",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "contents",
+            "archive"
+          ]
+        }
+      }
+    },
+    {
+      "name": "API - Delete Content",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/contents/{{lastCreatedId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "contents",
+            "{{lastCreatedId}}"
+          ]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3001"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "lastCreatedId",
+      "value": "21"
+    }
+  ]
+}
