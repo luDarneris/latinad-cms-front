@@ -48,7 +48,7 @@ function LoginController($scope, $state, $stateParams, AuthService) {
           return;
         }
 
-        $scope.loginError = "Error en conexion";
+        $scope.loginError = "Error de conexión";
       })
       .finally(function () {
         $scope.isSubmitting = false;
@@ -58,7 +58,7 @@ function LoginController($scope, $state, $stateParams, AuthService) {
 
 function getSessionMessage(reason) {
   if (reason === "expired") {
-    return "Tu sesión exipiró";
+    return "Tu sesión expiró";
   }
 
   if (reason === "required") {

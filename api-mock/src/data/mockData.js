@@ -90,7 +90,7 @@ var mockData = {
     },
     {
       id: 9,
-      name: "Campana bancos",
+      name: "Campaña bancos",
       type: "image",
       url: "https://placehold.co/400x300?text=Bancos",
       category_id: 4,
@@ -112,7 +112,7 @@ var mockData = {
     },
     {
       id: 11,
-      name: "Nueva coleccion",
+      name: "Nueva colección",
       type: "image",
       url: "https://placehold.co/400x300?text=Coleccion",
       category_id: 1,
@@ -123,7 +123,7 @@ var mockData = {
     },
     {
       id: 12,
-      name: "Invitacion concierto",
+      name: "Invitación concierto",
       type: "video",
       url: "https://samplelib.com/lib/preview/mp4/sample-5mb.mp4",
       category_id: 2,
@@ -224,21 +224,21 @@ var mockData = {
   categories: [
     { id: 1, name: "Retail" },
     { id: 2, name: "Entretenimiento" },
-    { id: 3, name: "Gastronomia" },
+    { id: 3, name: "Gastronomía" },
     { id: 4, name: "Servicios" }
   ],
   folders: [
     { id: 1, name: "2024", parent_id: null },
     { id: 2, name: "2025", parent_id: null },
     { id: 3, name: "Verano", parent_id: 1 },
-    { id: 4, name: "Otono", parent_id: 1 },
+    { id: 4, name: "Otoño", parent_id: 1 },
     { id: 5, name: "Eventos", parent_id: 1 },
     { id: 6, name: "Retail", parent_id: 2 },
     { id: 7, name: "Bebidas", parent_id: 2 },
     { id: 8, name: "Finanzas", parent_id: 2 },
     { id: 9, name: "Deportes", parent_id: 5 },
     { id: 10, name: "Conciertos", parent_id: 5 },
-    { id: 11, name: "Tecnologia", parent_id: 5 },
+    { id: 11, name: "Tecnología", parent_id: 5 },
     { id: 12, name: "Promos", parent_id: 3 },
     { id: 13, name: "Institucional", parent_id: 4 },
     { id: 14, name: "Pantallas LED", parent_id: 6 }

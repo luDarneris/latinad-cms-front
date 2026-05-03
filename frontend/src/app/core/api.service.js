@@ -20,6 +20,14 @@ function ApiService($http, API_BASE_URL) {
       return response.data;
     });
   };
+
+  this.archiveContents = function (ids) {
+    return $http.patch(API_BASE_URL + "/api/contents/archive", {
+      ids: ids
+    }).then(function (response) {
+      return response.data;
+    });
+  };
 }
 
 ApiService.$inject = ["$http", "API_BASE_URL"];

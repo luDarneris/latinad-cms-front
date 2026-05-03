@@ -11,6 +11,7 @@ angular.module("latinadCmsApp").component("contentCard", {
     content: "<",
     folderName: "@",
     selected: "<",
+    selectionDisabled: "<",
     showCheckbox: "<",
     onSelectionChange: "&"
   },
@@ -55,6 +56,7 @@ angular.module("latinadCmsApp").component("contentCard", {
           ng-if="$ctrl.showCheckbox">
           <app-checkbox
             checked="$ctrl.selected"
+            disabled="$ctrl.selectionDisabled"
             label="Seleccionar {{$ctrl.content.name}}"
             on-change="$ctrl.handleSelectionChange(checked)">
           </app-checkbox>
@@ -103,7 +105,7 @@ angular.module("latinadCmsApp").component("contentCard", {
             {{$ctrl.content.name}}
           </h3>
           <p class="mt-1 text-sm font-semibold leading-[1.15] text-brand">
-            {{$ctrl.categoryName || "Sin categoria"}}
+            {{$ctrl.categoryName || "Sin categoría"}}
           </p>
         </div>
 

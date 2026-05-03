@@ -25,7 +25,9 @@ function DashboardController($scope, $state, AuthService, ApiService) {
   $scope.isLoading = true;
   $scope.isFiltering = false;
   $scope.isCreateContentModalOpen = false;
+  $scope.isArchiveConfirmationOpen = false;
   $scope.isCreatingContent = false;
+  $scope.isArchivingContents = false;
   $scope.isSelectionMode = false;
   $scope.selectedContentIds = {};
   $scope.errorMessage = "";
@@ -51,11 +53,11 @@ function DashboardController($scope, $state, AuthService, ApiService) {
   };
   $scope.typeFilters = [
     {
-      label: "Todo",
+      label: "Todos",
       value: ""
     },
     {
-      label: "Imagenes",
+      label: "Imágenes",
       value: "image"
     },
     {
@@ -79,7 +81,7 @@ function DashboardController($scope, $state, AuthService, ApiService) {
   }
 
   $scope.getCategoryName = function (categoryId) {
-    return $scope.categoriesById[categoryId] || "Sin categoria";
+    return $scope.categoriesById[categoryId] || "Sin categoría";
   };
 
   $scope.getFolderName = function (folderId) {
@@ -187,7 +189,7 @@ function DashboardController($scope, $state, AuthService, ApiService) {
       .then(function () {
         resetCreateContentForm();
         $scope.isCreateContentModalOpen = false;
-        $scope.successMessage = "Contenido creado con exito";
+        $scope.successMessage = "Contenido creado con éxito";
         return loadContents({
           errorMessage: "Contenido creado, pero no pudimos actualizar la lista."
         });
@@ -205,7 +207,7 @@ function DashboardController($scope, $state, AuthService, ApiService) {
   };
 
   $scope.setContentSelected = function (content, selected) {
-    if (!content) {
+    if (!content || content.archived) {
       return;
     }
 
@@ -226,13 +228,15 @@ function DashboardController($scope, $state, AuthService, ApiService) {
   };
 
   $scope.selectAllVisibleContents = function () {
-    ($scope.contents || []).forEach(function (content) {
+    getSelectableVisibleContents().forEach(function (content) {
       $scope.selectedContentIds[content.id] = true;
     });
   };
 
   $scope.areAllVisibleContentsSelected = function () {
-    return Boolean(($scope.contents || []).length) && $scope.contents.every(function (content) {
+    var selectableContents = getSelectableVisibleContents();
+
+    return Boolean(selectableContents.length) && selectableContents.every(function (content) {
       return $scope.isContentSelected(content.id);
     });
   };
@@ -249,6 +253,97 @@ function DashboardController($scope, $state, AuthService, ApiService) {
   $scope.getSelectedContentCount = function () {
     return Object.keys($scope.selectedContentIds).length;
   };
+
+  $scope.getSelectableVisibleContentCount = function () {
+    return getSelectableVisibleContents().length;
+  };
+
+  $scope.openArchiveConfirmation = function () {
+    if ($scope.isArchivingContents || !getSelectedContentIds().length) {
+      return;
+    }
+
+    $scope.errorMessage = "";
+    $scope.successMessage = "";
+    $scope.isArchiveConfirmationOpen = true;
+  };
+
+  $scope.closeArchiveConfirmation = function () {
+    if ($scope.isArchivingContents) {
+      return;
+    }
+
+    $scope.isArchiveConfirmationOpen = false;
+  };
+
+  $scope.getArchiveConfirmationMessage = function () {
+    var selectedCount = $scope.getSelectedContentCount();
+
+    if (selectedCount === 1) {
+      return "¿Confirmás que querés archivar 1 contenido seleccionado?";
+    }
+
+    return "¿Confirmás que querés archivar " + selectedCount + " contenidos seleccionados?";
+  };
+
+  $scope.archiveSelectedContents = function () {
+    var selectedIds = getSelectedContentIds();
+
+    if ($scope.isArchivingContents || !selectedIds.length) {
+      return;
+    }
+
+    $scope.isArchivingContents = true;
+    $scope.errorMessage = "";
+    $scope.successMessage = "";
+
+    return ApiService.archiveContents(selectedIds)
+      .then(function (result) {
+        var archivedCount = result && result.archived_count ? result.archived_count : 0;
+
+        $scope.isArchiveConfirmationOpen = false;
+        exitSelectionMode();
+
+        if (archivedCount > 0) {
+          $scope.successMessage = archivedCount === 1
+            ? "Se archivó 1 contenido."
+            : "Se archivaron " + archivedCount + " contenidos.";
+        } else {
+          $scope.successMessage = "Los contenidos seleccionados ya estaban archivados.";
+        }
+
+        return loadContents({
+          errorMessage: "Los contenidos se archivaron, pero no pudimos actualizar la lista."
+        });
+      })
+      .catch(function (error) {
+        if (error.status === 401) {
+          return;
+        }
+
+        $scope.isArchiveConfirmationOpen = false;
+        $scope.errorMessage = "No pudimos archivar los contenidos. Intentá nuevamente.";
+      })
+      .finally(function () {
+        $scope.isArchivingContents = false;
+      });
+  };
+
+  function getSelectedContentIds() {
+    return Object.keys($scope.selectedContentIds)
+      .map(function (id) {
+        return Number(id);
+      })
+      .filter(function (id) {
+        return Number.isFinite(id);
+      });
+  }
+
+  function getSelectableVisibleContents() {
+    return ($scope.contents || []).filter(function (content) {
+      return content && !content.archived;
+    });
+  }
 
   function exitSelectionMode() {
     $scope.isSelectionMode = false;
@@ -318,15 +413,15 @@ function DashboardController($scope, $state, AuthService, ApiService) {
     var payload;
 
     if (!name) {
-      errors.name = "El nombre es requerido.";
+      errors.name = "El nombre es obligatorio.";
     }
 
     if (type !== "image" && type !== "video") {
-      errors.type = "El tipo de archivo es requedido.";
+      errors.type = "El tipo de archivo es obligatorio.";
     }
 
     if (!url) {
-      errors.url = "La URL del archivo es requerida.";
+      errors.url = "La URL del archivo es obligatoria.";
     } else if (!isValidHttpUrl(url)) {
       errors.url = "Ingresá una URL válida.";
     }
@@ -402,7 +497,7 @@ function DashboardController($scope, $state, AuthService, ApiService) {
         }
 
         $scope.contents = [];
-        $scope.errorMessage = loadOptions.errorMessage || "Error en conexion";
+        $scope.errorMessage = loadOptions.errorMessage || "Error de conexión";
       })
       .finally(function () {
         if (requestId !== lastContentRequestId) {
@@ -430,7 +525,7 @@ function DashboardController($scope, $state, AuthService, ApiService) {
           return;
         }
 
-        $scope.errorMessage = "Error en conexion";
+        $scope.errorMessage = "Error de conexión";
       })
       .finally(function () {
         $scope.isLoading = false;
