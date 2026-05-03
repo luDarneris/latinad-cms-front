@@ -57,6 +57,7 @@
   .toast-slide-in {
     animation: toast-slide-in 180ms ease-out both;
   }
+
 }
 
 @keyframes toast-slide-in {
