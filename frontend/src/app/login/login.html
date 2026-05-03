@@ -1,4 +1,9 @@
 <main class="flex min-h-screen items-center justify-center bg-brand px-4 py-8">
+  <app-toast
+    message="loginError"
+    on-close="clearLoginError()">
+  </app-toast>
+
   <section class="w-full max-w-md rounded-lg bg-surface p-6 shadow-sm md:p-8">
     <img class="mx-auto h-7 w-auto" ng-src="{{logoCms}}" alt="LatinAd CMS">
     <h1 class="mt-2 text-2xl font-semibold text-text">Iniciar sesion</h1>
@@ -35,12 +40,6 @@
         invalid="loginForm.password.$error.required && (loginForm.password.$touched || loginForm.$submitted)"
         error="loginForm.password.$error.required && (loginForm.password.$touched || loginForm.$submitted) ? 'La contraseña es requerida' : ''">
       </app-input>
-
-      <p
-        class="rounded-md border border-danger bg-red-50 px-3 py-2 text-sm text-danger"
-        ng-if="loginError">
-        {{loginError}}
-      </p>
 
       <app-button
         label="{{isSubmitting ? 'Ingresando...' : 'Ingresar'}}"

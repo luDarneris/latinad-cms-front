@@ -25,6 +25,7 @@ function DashboardController($scope, $state, AuthService, ApiService) {
   $scope.isLoading = true;
   $scope.isFiltering = false;
   $scope.isSelectionMode = false;
+  $scope.selectedContentIds = {};
   $scope.errorMessage = "";
   $scope.contentFilters = {
     search: "",
@@ -74,11 +75,14 @@ function DashboardController($scope, $state, AuthService, ApiService) {
   };
 
   $scope.setTypeFilter = function (filterValue) {
+    exitSelectionMode();
     $scope.contentFilters.type = filterValue;
     loadContents();
   };
 
   $scope.applyFilters = function (filterKey, value) {
+    exitSelectionMode();
+
     if (filterKey) {
       $scope.contentFilters[filterKey] = value || "";
     }
@@ -88,7 +92,66 @@ function DashboardController($scope, $state, AuthService, ApiService) {
 
   $scope.toggleSelectionMode = function () {
     $scope.isSelectionMode = !$scope.isSelectionMode;
+
+    if (!$scope.isSelectionMode) {
+      $scope.clearSelection();
+    }
   };
+
+  $scope.clearErrorMessage = function () {
+    $scope.errorMessage = "";
+  };
+
+  $scope.setContentSelected = function (content, selected) {
+    if (!content) {
+      return;
+    }
+
+    if (selected) {
+      $scope.selectedContentIds[content.id] = true;
+      return;
+    }
+
+    delete $scope.selectedContentIds[content.id];
+  };
+
+  $scope.isContentSelected = function (contentId) {
+    return Boolean($scope.selectedContentIds[contentId]);
+  };
+
+  $scope.clearSelection = function () {
+    $scope.selectedContentIds = {};
+  };
+
+  $scope.selectAllVisibleContents = function () {
+    ($scope.contents || []).forEach(function (content) {
+      $scope.selectedContentIds[content.id] = true;
+    });
+  };
+
+  $scope.areAllVisibleContentsSelected = function () {
+    return Boolean(($scope.contents || []).length) && $scope.contents.every(function (content) {
+      return $scope.isContentSelected(content.id);
+    });
+  };
+
+  $scope.toggleAllVisibleContents = function () {
+    if ($scope.areAllVisibleContentsSelected()) {
+      $scope.clearSelection();
+      return;
+    }
+
+    $scope.selectAllVisibleContents();
+  };
+
+  $scope.getSelectedContentCount = function () {
+    return Object.keys($scope.selectedContentIds).length;
+  };
+
+  function exitSelectionMode() {
+    $scope.isSelectionMode = false;
+    $scope.clearSelection();
+  }
 
   function buildContentParams() {
     var params = {};
@@ -134,7 +197,7 @@ function DashboardController($scope, $state, AuthService, ApiService) {
         }
 
         $scope.contents = [];
-        $scope.errorMessage = "No pudimos cargar los contenidos. Revisa que la API mock este corriendo.";
+        $scope.errorMessage = "Error en conexion";
       })
       .finally(function () {
         if (requestId !== lastContentRequestId) {
@@ -158,7 +221,7 @@ function DashboardController($scope, $state, AuthService, ApiService) {
         return loadContents();
       })
       .catch(function () {
-        $scope.errorMessage = "No pudimos cargar los contenidos. Revisa que la API mock este corriendo.";
+        $scope.errorMessage = "Error en conexion";
       })
       .finally(function () {
         $scope.isLoading = false;

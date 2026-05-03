@@ -11,6 +11,10 @@ function LoginController($scope, $state, $stateParams, AuthService) {
   $scope.loginError = "";
   $scope.sessionMessage = getSessionMessage($stateParams.reason);
 
+  $scope.clearLoginError = function () {
+    $scope.loginError = "";
+  };
+
   $scope.submitLogin = function (form) {
     $scope.loginError = "";
 
@@ -26,11 +30,11 @@ function LoginController($scope, $state, $stateParams, AuthService) {
       })
       .catch(function (error) {
         if (error.status === 401) {
-          $scope.loginError = "Usuario o contraseña inválidos.";
+          $scope.loginError = "Usuario o contraseña inválidos";
           return;
         }
 
-        $scope.loginError = "No pudimos iniciar sesión. Revisá que la API esté disponible.";
+        $scope.loginError = "Error en conexion";
       })
       .finally(function () {
         $scope.isSubmitting = false;

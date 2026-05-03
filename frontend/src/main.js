@@ -12,6 +12,8 @@ import "./app/shared/ui/app-button/app-button.component";
 import "./app/shared/ui/app-checkbox/app-checkbox.component";
 import "./app/shared/ui/app-input/app-input.component";
 import "./app/shared/ui/app-select/app-select.component";
+import "./app/shared/ui/app-toast/app-toast.component";
+import "./app/shared/ui/close-button/close-button.component";
 import "./app/shared/ui/content-card/content-card.component";
 import "./app/shared/ui/filter-pill/filter-pill.component";
 import "./app/shared/ui/smol-button/smol-button.component";

@@ -10,7 +10,9 @@ angular.module("latinadCmsApp").component("contentCard", {
     categoryName: "@",
     content: "<",
     folderName: "@",
-    showCheckbox: "<"
+    selected: "<",
+    showCheckbox: "<",
+    onSelectionChange: "&"
   },
   controller: function () {
     this.calendarIcon = calendarIcon;
@@ -34,6 +36,15 @@ angular.module("latinadCmsApp").component("contentCard", {
     this.getVideoPreviewUrl = function () {
       return "https://placehold.co/640x480/eef2f5/eef2f5?text=";
     };
+
+    this.handleSelectionChange = function (checked) {
+      if (this.onSelectionChange) {
+        this.onSelectionChange({
+          content: this.content,
+          selected: checked
+        });
+      }
+    };
   },
   template: `
     <article
@@ -43,8 +54,9 @@ angular.module("latinadCmsApp").component("contentCard", {
           class="absolute right-3 top-3 z-10"
           ng-if="$ctrl.showCheckbox">
           <app-checkbox
-            checked="false"
-            label="Seleccionar {{$ctrl.content.name}}">
+            checked="$ctrl.selected"
+            label="Seleccionar {{$ctrl.content.name}}"
+            on-change="$ctrl.handleSelectionChange(checked)">
           </app-checkbox>
         </div>
 

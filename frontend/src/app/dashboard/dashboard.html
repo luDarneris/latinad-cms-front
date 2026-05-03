@@ -1,4 +1,9 @@
 <div class="min-h-screen bg-bg text-text">
+  <app-toast
+    message="errorMessage"
+    on-close="clearErrorMessage()">
+  </app-toast>
+
   <topbar
     logo="{{logoCms}}"
     user="user"
@@ -36,12 +41,13 @@
       </div>
 
       <div class="mt-4 flex gap-2 overflow-x-auto pb-1 md:gap-3">
-        <filter-pill
-          ng-repeat="filter in typeFilters track by filter.value"
-          label="{{filter.label}}"
-          active="isTypeFilterActive(filter.value)"
-          on-click="setTypeFilter(filter.value)">
-        </filter-pill>
+        <span ng-repeat="filter in typeFilters track by filter.value">
+          <filter-pill
+            active="contentFilters.type === filter.value"
+            label="{{filter.label}}"
+            on-click="setTypeFilter(filter.value)">
+          </filter-pill>
+        </span>
 
         <span class="mx-1 hidden h-8 w-px shrink-0 bg-border md:block"></span>
 
@@ -73,14 +79,28 @@
       class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
       ng-if="!isLoading && !errorMessage">
       <p class="text-sm font-semibold text-text-muted">
-        {{contents.length}} resultado{{contents.length === 1 ? '' : 's'}} encontrado{{contents.length === 1 ? '' : 's'}}
+        <span ng-if="!isSelectionMode">
+          {{contents.length}} resultado{{contents.length === 1 ? '' : 's'}} encontrado{{contents.length === 1 ? '' : 's'}}
+        </span>
+        <span ng-if="isSelectionMode">
+          {{getSelectedContentCount()}} seleccionado{{getSelectedContentCount() === 1 ? '' : 's'}}
+        </span>
       </p>
 
       <div class="flex justify-end gap-2" ng-if="contents.length">
         <smol-button
           icon="{{archiveIcon}}"
-          label="Archivar seleccionados">
+          label="Archivar seleccionados"
+          ng-if="isSelectionMode && getSelectedContentCount()">
         </smol-button>
+
+        <app-button
+          label="{{areAllVisibleContentsSelected() ? 'Deseleccionar todo' : 'Seleccionar todo'}}"
+          full-width="false"
+          variant="secondary"
+          on-click="toggleAllVisibleContents()"
+          ng-if="isSelectionMode">
+        </app-button>
 
         <app-button
           label="{{isSelectionMode ? 'Cancelar seleccion' : 'Seleccionar'}}"
@@ -110,12 +130,6 @@
     </section>
 
     <div
-      class="rounded-lg border border-danger bg-danger-soft px-4 py-3 text-sm font-medium text-danger"
-      ng-if="!isLoading && errorMessage">
-      {{errorMessage}}
-    </div>
-
-    <div
       class="rounded-lg border border-border bg-surface px-4 py-10 text-center text-sm text-text-muted"
       ng-if="!isLoading && !errorMessage && !contents.length">
       No hay contenidos que coincidan con la busqueda o el filtro activo.
@@ -129,7 +143,9 @@
         content="content"
         category-name="{{getCategoryName(content.category_id)}}"
         folder-name="{{getFolderName(content.folder_id)}}"
-        show-checkbox="isSelectionMode">
+        selected="isContentSelected(content.id)"
+        show-checkbox="isSelectionMode"
+        on-selection-change="setContentSelected(content, selected)">
       </content-card>
     </section>
   </main>
