@@ -15,8 +15,22 @@ function LoginController($scope, $state, $stateParams, AuthService) {
     $scope.loginError = "";
   };
 
+  $scope.clearSessionMessage = function () {
+    $scope.sessionMessage = "";
+  };
+
+  $scope.getLoginToastMessage = function () {
+    return $scope.loginError || $scope.sessionMessage;
+  };
+
+  $scope.clearLoginToastMessage = function () {
+    $scope.clearLoginError();
+    $scope.clearSessionMessage();
+  };
+
   $scope.submitLogin = function (form) {
     $scope.loginError = "";
+    $scope.sessionMessage = "";
 
     if (form.$invalid) {
       return;
@@ -43,8 +57,12 @@ function LoginController($scope, $state, $stateParams, AuthService) {
 }
 
 function getSessionMessage(reason) {
+  if (reason === "expired") {
+    return "Tu sesión exipiró";
+  }
+
   if (reason === "required") {
-    return "Iniciá sesión para acceder al panel.";
+    return "Iniciá sesión para acceder al panel";
   }
 
   return "";

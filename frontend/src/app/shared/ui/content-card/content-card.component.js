@@ -82,16 +82,16 @@ angular.module("latinadCmsApp").component("contentCard", {
         <div
           class="absolute left-3 top-3 flex items-center gap-2"
           ng-class="$ctrl.showCheckbox ? 'max-w-[calc(100%-4.75rem)]' : 'max-w-[calc(100%-1.5rem)]'">
-          <span class="flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-text shadow-sm backdrop-blur">
-            <img class="size-4 opacity-70" ng-src="{{$ctrl.getTypeIcon()}}" alt="">
-            {{$ctrl.getTypeLabel()}}
-          </span>
+          <app-tag
+            icon="{{$ctrl.getTypeIcon()}}"
+            label="{{$ctrl.getTypeLabel()}}">
+          </app-tag>
 
-          <span
-            class="rounded-full bg-danger-soft px-3 py-1 text-xs font-semibold text-danger shadow-sm"
+          <app-tag
+            label="Archivado"
+            variant="danger"
             ng-if="$ctrl.content.archived">
-            Archivado
-          </span>
+          </app-tag>
         </div>
 
         <div class="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/35 to-transparent"></div>
@@ -113,10 +113,8 @@ angular.module("latinadCmsApp").component("contentCard", {
             <span class="truncate">{{$ctrl.content.created_at | contentDate}}</span>
           </span>
 
-          <span class="h-4 w-px shrink-0 bg-border"></span>
-
           <span
-            class="flex min-w-0 items-center gap-2 text-sm text-text-muted"
+            class="flex min-w-0 items-center justify-end gap-2 text-right text-sm text-text-muted"
             title="{{$ctrl.folderName || 'Sin carpeta'}}">
             <img class="size-4 shrink-0 opacity-60" ng-src="{{$ctrl.projectIcon}}" alt="">
             <span class="truncate">{{$ctrl.folderName || "Sin carpeta"}}</span>

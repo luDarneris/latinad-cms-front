@@ -1,7 +1,7 @@
 <main class="flex min-h-screen items-center justify-center bg-brand px-4 py-8">
   <app-toast
-    message="loginError"
-    on-close="clearLoginError()">
+    message="getLoginToastMessage()"
+    on-close="clearLoginToastMessage()">
   </app-toast>
 
   <section class="w-full max-w-md rounded-lg bg-surface p-6 shadow-sm md:p-8">
@@ -9,12 +9,6 @@
     <h1 class="mt-2 text-2xl font-semibold text-text">Iniciar sesion</h1>
     <p class="mt-2 text-sm text-text-muted">
       Accede para administrar contenidos.
-    </p>
-
-    <p
-      class="mt-4 rounded-md border border-brand-soft bg-brand-soft px-3 py-2 text-sm text-brand"
-      ng-if="sessionMessage">
-      {{sessionMessage}}
     </p>
 
     <form class="mt-6 space-y-4" name="loginForm" ng-submit="submitLogin(loginForm)" novalidate>

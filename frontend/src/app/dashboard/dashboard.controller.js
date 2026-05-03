@@ -191,8 +191,12 @@ function DashboardController($scope, $state, AuthService, ApiService) {
 
         $scope.contents = data.items || [];
       })
-      .catch(function () {
+      .catch(function (error) {
         if (requestId !== lastContentRequestId) {
+          return;
+        }
+
+        if (error.status === 401) {
           return;
         }
 
@@ -220,7 +224,11 @@ function DashboardController($scope, $state, AuthService, ApiService) {
         $scope.foldersById = buildLookup(data.folders);
         return loadContents();
       })
-      .catch(function () {
+      .catch(function (error) {
+        if (error.status === 401) {
+          return;
+        }
+
         $scope.errorMessage = "Error en conexion";
       })
       .finally(function () {
