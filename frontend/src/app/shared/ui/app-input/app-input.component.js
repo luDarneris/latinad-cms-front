@@ -5,6 +5,7 @@ import eyeIcon from "../../../../assets/icons/eye.svg";
 angular.module("latinadCmsApp").component("appInput", {
   bindings: {
     autocomplete: "@",
+    disabled: "<",
     error: "<",
     invalid: "<",
     label: "@",
@@ -67,6 +68,7 @@ angular.module("latinadCmsApp").component("appInput", {
             placeholder="{{$ctrl.placeholder}}"
             autocomplete="{{$ctrl.autocomplete}}"
             ng-model="$ctrl.model"
+            ng-disabled="$ctrl.disabled"
             ng-required="$ctrl.required">
 
           <button

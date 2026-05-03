@@ -4,6 +4,12 @@
     on-close="clearErrorMessage()">
   </app-toast>
 
+  <app-toast
+    message="successMessage"
+    type="success"
+    on-close="clearSuccessMessage()">
+  </app-toast>
+
   <topbar
     logo="{{logoCms}}"
     user="user"
@@ -29,48 +35,57 @@
       title="Crear contenido"
       open="isCreateContentModalOpen"
       on-close="closeCreateContentModal()">
-      <form class="-mx-5 -my-5" name="createContentForm" novalidate>
+      <form class="-mx-5 -my-5" name="createContentNgForm" novalidate>
         <section class="grid gap-5 px-6 py-6">
-          <div class="grid gap-4 md:grid-cols-[1fr_1fr]">
             <app-input
               label="Nombre"
               name="contentName"
               model="createContentForm.name"
               placeholder="Ej: Presentacion Corporativa Q4"
               required="true"
+              disabled="isCreatingContent"
+              invalid="createContentWasSubmitted && createContentErrors.name"
+              error="createContentWasSubmitted ? createContentErrors.name : ''"
               type="text">
             </app-input>
 
-            <div class="grid content-start gap-2">
-              <span class="text-sm font-medium text-text">
-                Tipo <span class="text-danger">*</span>
-              </span>
+            <div class="grid gap-5 md:grid-cols-[11rem_minmax(0,1fr)]">
+              <div class="grid content-start gap-2">
+                <span class="text-sm font-medium text-text">
+                  Tipo <span class="text-danger">*</span>
+                </span>
 
-              <app-select
-                label="Tipo"
-                name="contentType"
-                placeholder="Seleccionar tipo"
-                model="createContentForm.type"
-                options="createContentTypeOptions"
-                show-placeholder="false"
-                variant="secondary"
-                value-field="value"
-                label-field="label"
-                on-change="handleCreateContentTypeChange()">
-              </app-select>
+                <app-select
+                  label="Tipo"
+                  name="contentType"
+                  placeholder="Seleccionar tipo"
+                  model="createContentForm.type"
+                  options="createContentTypeOptions"
+                  show-placeholder="false"
+                  variant="secondary"
+                  disabled="isCreatingContent"
+                  invalid="createContentWasSubmitted && createContentErrors.type"
+                  error="createContentWasSubmitted ? createContentErrors.type : ''"
+                  value-field="value"
+                  label-field="label"
+                  on-change="handleCreateContentTypeChange()">
+                </app-select>
+              </div>
+
+              <app-input
+                label="URL del archivo"
+                name="contentUrl"
+                model="createContentForm.url"
+                placeholder="https://cdn.empresa.com/archivos/..."
+                required="true"
+                disabled="isCreatingContent"
+                invalid="createContentWasSubmitted && createContentErrors.url"
+                error="createContentWasSubmitted ? createContentErrors.url : ''"
+                type="text">
+              </app-input>
             </div>
-          </div>
 
-          <app-input
-            label="URL del archivo"
-            name="contentUrl"
-            model="createContentForm.url"
-            placeholder="https://cdn.empresa.com/archivos/..."
-            required="true"
-            type="text">
-          </app-input>
-
-          <div class="grid gap-4 md:grid-cols-2">
+            <div class="grid gap-5 md:grid-cols-2">
             <label class="grid gap-2">
               <span class="text-sm font-medium text-text">Categoria</span>
 
@@ -82,6 +97,9 @@
                 options="categories"
                 show-placeholder="false"
                 variant="secondary"
+                disabled="isCreatingContent"
+                invalid="createContentWasSubmitted && createContentErrors.category_id"
+                error="createContentWasSubmitted ? createContentErrors.category_id : ''"
                 value-field="id"
                 label-field="name">
               </app-select>
@@ -98,11 +116,14 @@
                 options="folders"
                 show-placeholder="false"
                 variant="secondary"
+                disabled="isCreatingContent"
+                invalid="createContentWasSubmitted && createContentErrors.folder_id"
+                error="createContentWasSubmitted ? createContentErrors.folder_id : ''"
                 value-field="id"
                 label-field="name">
               </app-select>
             </label>
-          </div>
+            </div>
 
           <div
             class="rounded-xl border border-dashed border-border bg-bg/70 px-4 py-4"
@@ -112,6 +133,7 @@
                 label="Tiene audio"
                 name="contentHasAudio"
                 checked="createContentForm.has_audio"
+                disabled="isCreatingContent"
                 on-change="setCreateContentHasAudio(checked)">
               </app-checkbox>
 
@@ -120,16 +142,19 @@
           </div>
         </section>
 
-        <footer class="flex flex-col-reverse gap-3 border-t border-border px-6 py-5 sm:flex-row sm:justify-end">
+        <footer class="flex items-center justify-between gap-3 border-t border-border px-6 py-5 sm:justify-end">
           <app-button
             label="Cancelar"
             full-width="false"
+            disabled="isCreatingContent"
             on-click="closeCreateContentModal()">
           </app-button>
 
           <app-button
-            label="Guardar cambios"
-            full-width="false">
+            label="{{isCreatingContent ? 'Guardando...' : 'Guardar'}}"
+            full-width="false"
+            disabled="isCreatingContent"
+            on-click="saveCreateContent()">
           </app-button>
         </footer>
       </form>

@@ -25,17 +25,14 @@ function DashboardController($scope, $state, AuthService, ApiService) {
   $scope.isLoading = true;
   $scope.isFiltering = false;
   $scope.isCreateContentModalOpen = false;
+  $scope.isCreatingContent = false;
   $scope.isSelectionMode = false;
   $scope.selectedContentIds = {};
   $scope.errorMessage = "";
-  $scope.createContentForm = {
-    name: "",
-    type: "",
-    url: "",
-    category_id: "",
-    folder_id: "",
-    has_audio: false
-  };
+  $scope.successMessage = "";
+  $scope.createContentErrors = {};
+  $scope.createContentWasSubmitted = false;
+  $scope.createContentForm = getEmptyCreateContentForm();
   $scope.createContentTypeOptions = [
     {
       label: "Imagen",
@@ -121,12 +118,23 @@ function DashboardController($scope, $state, AuthService, ApiService) {
     $scope.errorMessage = "";
   };
 
+  $scope.clearSuccessMessage = function () {
+    $scope.successMessage = "";
+  };
+
   $scope.openCreateContentModal = function () {
+    $scope.createContentWasSubmitted = false;
+    $scope.createContentErrors = {};
     $scope.isCreateContentModalOpen = true;
   };
 
   $scope.closeCreateContentModal = function () {
+    if ($scope.isCreatingContent) {
+      return;
+    }
+
     $scope.isCreateContentModalOpen = false;
+    resetCreateContentForm();
   };
 
   $scope.handleCreateContentTypeChange = function () {
@@ -142,6 +150,41 @@ function DashboardController($scope, $state, AuthService, ApiService) {
 
   $scope.setCreateContentHasAudio = function (checked) {
     $scope.createContentForm.has_audio = Boolean(checked);
+  };
+
+  $scope.saveCreateContent = function () {
+    var validation = validateCreateContentForm($scope.createContentForm);
+
+    $scope.createContentWasSubmitted = true;
+    $scope.createContentErrors = validation.errors;
+
+    if ($scope.isCreatingContent || !validation.isValid) {
+      return;
+    }
+
+    $scope.isCreatingContent = true;
+    $scope.errorMessage = "";
+    $scope.successMessage = "";
+
+    return ApiService.createContent(validation.payload)
+      .then(function () {
+        resetCreateContentForm();
+        $scope.isCreateContentModalOpen = false;
+        $scope.successMessage = "Contenido creado con exito";
+        return loadContents({
+          errorMessage: "Contenido creado, pero no pudimos actualizar la lista."
+        });
+      })
+      .catch(function (error) {
+        if (error.status === 401) {
+          return;
+        }
+
+        $scope.errorMessage = "No pudimos crear el contenido. Revisá los datos e intentá nuevamente.";
+      })
+      .finally(function () {
+        $scope.isCreatingContent = false;
+      });
   };
 
   $scope.setContentSelected = function (content, selected) {
@@ -195,6 +238,104 @@ function DashboardController($scope, $state, AuthService, ApiService) {
     $scope.clearSelection();
   }
 
+  function getEmptyCreateContentForm() {
+    return {
+      name: "",
+      type: "",
+      url: "",
+      category_id: "",
+      folder_id: "",
+      has_audio: false
+    };
+  }
+
+  function resetCreateContentForm() {
+    $scope.createContentForm = getEmptyCreateContentForm();
+    $scope.createContentErrors = {};
+    $scope.createContentWasSubmitted = false;
+  }
+
+  function normalizeOptionalId(value) {
+    var normalized;
+
+    if (value === "" || value === null || typeof value === "undefined") {
+      return null;
+    }
+
+    normalized = Number(value);
+
+    if (!Number.isFinite(normalized)) {
+      return null;
+    }
+
+    return normalized;
+  }
+
+  function validateOptionalId(value, fieldName, errors) {
+    if (value === "" || value === null || typeof value === "undefined") {
+      return;
+    }
+
+    if (!Number.isFinite(Number(value))) {
+      errors[fieldName] = "Seleccioná una opción válida.";
+    }
+  }
+
+  function isValidHttpUrl(value) {
+    var parsedUrl;
+
+    try {
+      parsedUrl = new URL(value);
+    } catch (error) {
+      return false;
+    }
+
+    return parsedUrl.protocol === "http:" || parsedUrl.protocol === "https:";
+  }
+
+  function validateCreateContentForm(form) {
+    var errors = {};
+    var name = String(form.name || "").trim();
+    var type = String(form.type || "").trim();
+    var url = String(form.url || "").trim();
+    var payload;
+
+    if (!name) {
+      errors.name = "El nombre es requerido.";
+    }
+
+    if (type !== "image" && type !== "video") {
+      errors.type = "El tipo de archivo es requedido.";
+    }
+
+    if (!url) {
+      errors.url = "La URL del archivo es requerida.";
+    } else if (!isValidHttpUrl(url)) {
+      errors.url = "Ingresá una URL válida.";
+    }
+
+    validateOptionalId(form.category_id, "category_id", errors);
+    validateOptionalId(form.folder_id, "folder_id", errors);
+
+    payload = {
+      name: name,
+      type: type,
+      url: url,
+      category_id: normalizeOptionalId(form.category_id),
+      folder_id: normalizeOptionalId(form.folder_id)
+    };
+
+    if (type === "video") {
+      payload.has_audio = Boolean(form.has_audio);
+    }
+
+    return {
+      errors: errors,
+      isValid: !Object.keys(errors).length,
+      payload: payload
+    };
+  }
+
   function buildContentParams() {
     var params = {};
     var search = String($scope.contentFilters.search || "").trim();
@@ -218,8 +359,9 @@ function DashboardController($scope, $state, AuthService, ApiService) {
     return params;
   }
 
-  function loadContents() {
+  function loadContents(options) {
     var requestId = lastContentRequestId + 1;
+    var loadOptions = options || {};
 
     lastContentRequestId = requestId;
     $scope.isFiltering = !$scope.isLoading;
@@ -243,7 +385,7 @@ function DashboardController($scope, $state, AuthService, ApiService) {
         }
 
         $scope.contents = [];
-        $scope.errorMessage = "Error en conexion";
+        $scope.errorMessage = loadOptions.errorMessage || "Error en conexion";
       })
       .finally(function () {
         if (requestId !== lastContentRequestId) {

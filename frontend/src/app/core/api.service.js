@@ -14,6 +14,12 @@ function ApiService($http, API_BASE_URL) {
       return response.data;
     });
   };
+
+  this.createContent = function (payload) {
+    return $http.post(API_BASE_URL + "/api/contents", payload).then(function (response) {
+      return response.data;
+    });
+  };
 }
 
 ApiService.$inject = ["$http", "API_BASE_URL"];
