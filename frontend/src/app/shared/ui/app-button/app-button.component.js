@@ -2,6 +2,7 @@ import angular from "angular";
 
 angular.module("latinadCmsApp").component("appButton", {
   bindings: {
+    active: "<",
     disabled: "<",
     fullWidth: "<",
     icon: "@",
@@ -33,10 +34,26 @@ angular.module("latinadCmsApp").component("appButton", {
 
     this.getIconClasses = function () {
       if (this.variant === "secondary") {
+        if (this.active) {
+          return "size-4 shrink-0 brightness-0 invert";
+        }
+
         return "size-4 shrink-0 opacity-70";
       }
 
       return "size-4 shrink-0 brightness-0 invert";
+    };
+
+    this.getButtonStyles = function () {
+      if (this.variant === "secondary" && this.active) {
+        return {
+          "background-color": "#62a8ea",
+          "border-color": "#62a8ea",
+          color: "#ffffff"
+        };
+      }
+
+      return {};
     };
 
     this.isIconRight = function () {
@@ -53,6 +70,7 @@ angular.module("latinadCmsApp").component("appButton", {
     <div class="{{$ctrl.getWrapperClasses()}}">
       <button
         class="{{$ctrl.getButtonClasses()}}"
+        ng-style="$ctrl.getButtonStyles()"
         type="{{$ctrl.type || 'button'}}"
         ng-disabled="$ctrl.disabled"
         ng-click="$ctrl.handleClick()">

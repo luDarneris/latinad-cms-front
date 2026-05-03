@@ -11,6 +11,7 @@ import "./app/shared/filters/content-date.filter";
 import "./app/shared/ui/app-button/app-button.component";
 import "./app/shared/ui/app-checkbox/app-checkbox.component";
 import "./app/shared/ui/app-input/app-input.component";
+import "./app/shared/ui/app-modal/app-modal.component";
 import "./app/shared/ui/app-select/app-select.component";
 import "./app/shared/ui/app-tag/app-tag.component";
 import "./app/shared/ui/app-toast/app-toast.component";

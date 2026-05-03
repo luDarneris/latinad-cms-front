@@ -3,6 +3,7 @@ import angular from "angular";
 angular.module("latinadCmsApp").component("filterPill", {
   bindings: {
     active: "<",
+    icon: "@",
     label: "@",
     onClick: "&"
   },
@@ -46,13 +47,18 @@ angular.module("latinadCmsApp").component("filterPill", {
   },
   template: `
     <button
-      class="h-7 rounded-full border px-3 text-xs font-semibold leading-none shadow-sm transition md:h-8 md:px-3.5"
+      class="inline-flex h-7 items-center justify-center gap-1.5 rounded-full border px-3 text-xs font-semibold leading-none shadow-sm transition md:h-8 md:px-3.5"
       ng-style="$ctrl.getButtonStyles()"
       ng-mouseenter="$ctrl.setHovered(true)"
       ng-mouseleave="$ctrl.setHovered(false)"
       type="button"
       ng-click="$ctrl.handleClick()">
-      {{$ctrl.label}}
+      <img
+        class="size-3.5 shrink-0"
+        ng-if="$ctrl.icon"
+        ng-src="{{$ctrl.icon}}"
+        alt="">
+      <span>{{$ctrl.label}}</span>
     </button>
   `
 });

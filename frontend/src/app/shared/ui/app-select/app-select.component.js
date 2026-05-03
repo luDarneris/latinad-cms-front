@@ -7,6 +7,8 @@ angular.module("latinadCmsApp").component("appSelect", {
     name: "@",
     options: "<",
     placeholder: "@",
+    showPlaceholder: "<",
+    variant: "@",
     valueField: "@",
     labelField: "@",
     onChange: "&"
@@ -29,6 +31,10 @@ angular.module("latinadCmsApp").component("appSelect", {
     };
 
     this.getOptions = function () {
+      if (this.showPlaceholder === false) {
+        return this.options || [];
+      }
+
       return [
         {
           isPlaceholder: true
@@ -41,6 +47,14 @@ angular.module("latinadCmsApp").component("appSelect", {
         this.onChange({ value: this.model });
       }
     };
+
+    this.getSelectClasses = function () {
+      if (this.variant === "secondary") {
+        return "h-[38px] w-full appearance-none rounded-md border border-border bg-white py-0 pl-3 pr-9 text-sm font-medium text-text outline-none transition hover:border-brand-light focus:border-brand focus:shadow-md focus:ring-0";
+      }
+
+      return "h-8 w-full appearance-none rounded-full border border-border/80 bg-surface py-0 pl-3 pr-9 text-xs font-semibold text-text-muted shadow-sm outline-none transition hover:border-brand-light hover:text-brand focus:border-brand focus:text-brand focus:shadow-md focus:ring-0 md:h-8 md:pl-3.5";
+    };
   },
   template: `
     <label class="block min-w-44">
@@ -48,7 +62,7 @@ angular.module("latinadCmsApp").component("appSelect", {
 
       <span class="relative block">
         <select
-          class="h-8 w-full appearance-none rounded-full border border-border/80 bg-surface py-0 pl-3 pr-9 text-xs font-semibold text-text-muted shadow-sm outline-none transition hover:border-brand-light hover:text-brand focus:border-brand focus:text-brand focus:shadow-md focus:ring-0 md:h-8 md:pl-3.5"
+          class="{{$ctrl.getSelectClasses()}}"
           name="{{$ctrl.name}}"
           ng-model="$ctrl.model"
           ng-options="$ctrl.getOptionValue(option) as $ctrl.getOptionLabel(option) for option in $ctrl.getOptions()"

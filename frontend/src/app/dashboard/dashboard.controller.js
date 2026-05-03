@@ -24,9 +24,28 @@ function DashboardController($scope, $state, AuthService, ApiService) {
   $scope.foldersById = {};
   $scope.isLoading = true;
   $scope.isFiltering = false;
+  $scope.isCreateContentModalOpen = false;
   $scope.isSelectionMode = false;
   $scope.selectedContentIds = {};
   $scope.errorMessage = "";
+  $scope.createContentForm = {
+    name: "",
+    type: "",
+    url: "",
+    category_id: "",
+    folder_id: "",
+    has_audio: false
+  };
+  $scope.createContentTypeOptions = [
+    {
+      label: "Imagen",
+      value: "image"
+    },
+    {
+      label: "Video",
+      value: "video"
+    }
+  ];
   $scope.contentFilters = {
     search: "",
     type: "",
@@ -100,6 +119,29 @@ function DashboardController($scope, $state, AuthService, ApiService) {
 
   $scope.clearErrorMessage = function () {
     $scope.errorMessage = "";
+  };
+
+  $scope.openCreateContentModal = function () {
+    $scope.isCreateContentModalOpen = true;
+  };
+
+  $scope.closeCreateContentModal = function () {
+    $scope.isCreateContentModalOpen = false;
+  };
+
+  $scope.handleCreateContentTypeChange = function () {
+    if ($scope.createContentForm.type !== "video") {
+      $scope.createContentForm.has_audio = false;
+    }
+  };
+
+  $scope.setCreateContentType = function (type) {
+    $scope.createContentForm.type = type;
+    $scope.handleCreateContentTypeChange();
+  };
+
+  $scope.setCreateContentHasAudio = function (checked) {
+    $scope.createContentForm.has_audio = Boolean(checked);
   };
 
   $scope.setContentSelected = function (content, selected) {

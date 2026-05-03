@@ -20,9 +20,120 @@
       <app-button
         label="Crear contenido"
         icon="{{addIcon}}"
-        full-width="false">
+        full-width="false"
+        on-click="openCreateContentModal()">
       </app-button>
     </section>
+
+    <app-modal
+      title="Crear contenido"
+      open="isCreateContentModalOpen"
+      on-close="closeCreateContentModal()">
+      <form class="-mx-5 -my-5" name="createContentForm" novalidate>
+        <section class="grid gap-5 px-6 py-6">
+          <div class="grid gap-4 md:grid-cols-[1fr_1fr]">
+            <app-input
+              label="Nombre"
+              name="contentName"
+              model="createContentForm.name"
+              placeholder="Ej: Presentacion Corporativa Q4"
+              required="true"
+              type="text">
+            </app-input>
+
+            <div class="grid content-start gap-2">
+              <span class="text-sm font-medium text-text">
+                Tipo <span class="text-danger">*</span>
+              </span>
+
+              <app-select
+                label="Tipo"
+                name="contentType"
+                placeholder="Seleccionar tipo"
+                model="createContentForm.type"
+                options="createContentTypeOptions"
+                show-placeholder="false"
+                variant="secondary"
+                value-field="value"
+                label-field="label"
+                on-change="handleCreateContentTypeChange()">
+              </app-select>
+            </div>
+          </div>
+
+          <app-input
+            label="URL del archivo"
+            name="contentUrl"
+            model="createContentForm.url"
+            placeholder="https://cdn.empresa.com/archivos/..."
+            required="true"
+            type="text">
+          </app-input>
+
+          <div class="grid gap-4 md:grid-cols-2">
+            <label class="grid gap-2">
+              <span class="text-sm font-medium text-text">Categoria</span>
+
+              <app-select
+                label="Categoria"
+                name="contentCategory"
+                placeholder="Seleccionar..."
+                model="createContentForm.category_id"
+                options="categories"
+                show-placeholder="false"
+                variant="secondary"
+                value-field="id"
+                label-field="name">
+              </app-select>
+            </label>
+
+            <label class="grid gap-2">
+              <span class="text-sm font-medium text-text">Carpeta</span>
+
+              <app-select
+                label="Carpeta"
+                name="contentFolder"
+                placeholder="Asignar a carpeta..."
+                model="createContentForm.folder_id"
+                options="folders"
+                show-placeholder="false"
+                variant="secondary"
+                value-field="id"
+                label-field="name">
+              </app-select>
+            </label>
+          </div>
+
+          <div
+            class="rounded-xl border border-dashed border-border bg-bg/70 px-4 py-4"
+            ng-if="createContentForm.type === 'video'">
+            <div class="flex items-center gap-3">
+              <app-checkbox
+                label="Tiene audio"
+                name="contentHasAudio"
+                checked="createContentForm.has_audio"
+                on-change="setCreateContentHasAudio(checked)">
+              </app-checkbox>
+
+              <span class="text-sm font-semibold text-text">¿Tiene audio?</span>
+            </div>
+          </div>
+        </section>
+
+        <footer class="flex flex-col-reverse gap-3 border-t border-border px-6 py-5 sm:flex-row sm:justify-end">
+          <app-button
+            label="Cancelar"
+            full-width="false"
+            on-click="closeCreateContentModal()">
+          </app-button>
+
+          <app-button
+            label="Guardar cambios"
+            full-width="false">
+          </app-button>
+        </footer>
+      </form>
+    </app-modal>
 
     <section class="mb-6">
       <div class="relative">

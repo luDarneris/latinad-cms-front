@@ -54,7 +54,10 @@ angular.module("latinadCmsApp").component("appInput", {
   template: `
     <div class="block w-full">
       <label class="block">
-        <span class="text-sm font-medium text-text">{{$ctrl.label}}</span>
+        <span class="text-sm font-medium text-text">
+          {{$ctrl.label}}
+          <span class="text-danger" ng-if="$ctrl.required">*</span>
+        </span>
 
         <span class="relative block">
           <input
