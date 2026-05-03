@@ -2,6 +2,7 @@ import angular from "angular";
 import calendarIcon from "../../../../assets/icons/calendar.svg";
 import imageIcon from "../../../../assets/icons/image.svg";
 import playIcon from "../../../../assets/icons/play.svg";
+import projectIcon from "../../../../assets/icons/project.svg";
 import videoIcon from "../../../../assets/icons/video.svg";
 
 angular.module("latinadCmsApp").component("contentCard", {
@@ -15,6 +16,7 @@ angular.module("latinadCmsApp").component("contentCard", {
     this.calendarIcon = calendarIcon;
     this.imageIcon = imageIcon;
     this.playIcon = playIcon;
+    this.projectIcon = projectIcon;
     this.videoIcon = videoIcon;
 
     this.isVideo = function () {
@@ -23,14 +25,6 @@ angular.module("latinadCmsApp").component("contentCard", {
 
     this.getTypeLabel = function () {
       return this.isVideo() ? "Video" : "Imagen";
-    };
-
-    this.getAudioLabel = function () {
-      if (!this.isVideo()) {
-        return "Sin audio";
-      }
-
-      return this.content.has_audio ? "Con audio" : "Sin audio";
     };
 
     this.getTypeIcon = function () {
@@ -76,7 +70,8 @@ angular.module("latinadCmsApp").component("contentCard", {
         <div
           class="absolute left-3 top-3 flex items-center gap-2"
           ng-class="$ctrl.showCheckbox ? 'max-w-[calc(100%-4.75rem)]' : 'max-w-[calc(100%-1.5rem)]'">
-          <span class="rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-text shadow-sm backdrop-blur">
+          <span class="flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-text shadow-sm backdrop-blur">
+            <img class="size-4 opacity-70" ng-src="{{$ctrl.getTypeIcon()}}" alt="">
             {{$ctrl.getTypeLabel()}}
           </span>
 
@@ -91,35 +86,28 @@ angular.module("latinadCmsApp").component("contentCard", {
       </div>
 
       <div class="space-y-4 p-4">
-        <div class="flex items-start gap-3">
-          <span class="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-lg bg-brand-soft">
-            <img class="size-5 opacity-70" ng-src="{{$ctrl.getTypeIcon()}}" alt="">
-          </span>
-
-          <div class="min-w-0">
-            <h3 class="line-clamp-2 text-base font-semibold leading-snug text-text">
-              {{$ctrl.content.name}}
-            </h3>
-            <p class="mt-1 text-xs font-medium uppercase text-text-muted">
-              {{$ctrl.getAudioLabel()}}
-            </p>
-          </div>
-        </div>
-
-        <div class="flex flex-wrap gap-2">
-          <span class="rounded-lg bg-brand-soft px-3 py-1.5 text-sm font-semibold text-brand">
+        <div class="min-w-0">
+          <h3 class="line-clamp-1 text-base font-semibold leading-[1.25] text-text">
+            {{$ctrl.content.name}}
+          </h3>
+          <p class="mt-1 text-sm font-semibold leading-[1.15] text-brand">
             {{$ctrl.categoryName || "Sin categoria"}}
-          </span>
-
-          <span class="rounded-lg bg-muted px-3 py-1.5 text-sm font-semibold text-text-muted">
-            {{$ctrl.folderName || "Sin carpeta"}}
-          </span>
+          </p>
         </div>
 
         <div class="flex items-center justify-between gap-3 border-t border-border pt-4">
           <span class="flex min-w-0 items-center gap-2 text-sm text-text-muted">
             <img class="size-4 shrink-0 opacity-60" ng-src="{{$ctrl.calendarIcon}}" alt="">
             <span class="truncate">{{$ctrl.content.created_at | contentDate}}</span>
+          </span>
+
+          <span class="h-4 w-px shrink-0 bg-border"></span>
+
+          <span
+            class="flex min-w-0 items-center gap-2 text-sm text-text-muted"
+            title="{{$ctrl.folderName || 'Sin carpeta'}}">
+            <img class="size-4 shrink-0 opacity-60" ng-src="{{$ctrl.projectIcon}}" alt="">
+            <span class="truncate">{{$ctrl.folderName || "Sin carpeta"}}</span>
           </span>
         </div>
       </div>

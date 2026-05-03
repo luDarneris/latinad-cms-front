@@ -18,7 +18,9 @@ function DashboardController($scope, $state, AuthService, ApiService) {
     name: "LatinAd Recruiter"
   };
   $scope.contents = [];
+  $scope.categories = [];
   $scope.categoriesById = {};
+  $scope.folders = [];
   $scope.foldersById = {};
   $scope.isLoading = true;
   $scope.isFiltering = false;
@@ -26,7 +28,9 @@ function DashboardController($scope, $state, AuthService, ApiService) {
   $scope.errorMessage = "";
   $scope.contentFilters = {
     search: "",
-    type: ""
+    type: "",
+    categoryId: "",
+    folderId: ""
   };
   $scope.typeFilters = [
     {
@@ -74,7 +78,11 @@ function DashboardController($scope, $state, AuthService, ApiService) {
     loadContents();
   };
 
-  $scope.applyFilters = function () {
+  $scope.applyFilters = function (filterKey, value) {
+    if (filterKey) {
+      $scope.contentFilters[filterKey] = value || "";
+    }
+
     loadContents();
   };
 
@@ -92,6 +100,14 @@ function DashboardController($scope, $state, AuthService, ApiService) {
 
     if ($scope.contentFilters.type) {
       params.type = $scope.contentFilters.type;
+    }
+
+    if ($scope.contentFilters.categoryId) {
+      params.category_id = $scope.contentFilters.categoryId;
+    }
+
+    if ($scope.contentFilters.folderId) {
+      params.folder_id = $scope.contentFilters.folderId;
     }
 
     return params;
@@ -135,6 +151,8 @@ function DashboardController($scope, $state, AuthService, ApiService) {
 
     ApiService.getMockData()
       .then(function (data) {
+        $scope.categories = data.categories || [];
+        $scope.folders = data.folders || [];
         $scope.categoriesById = buildLookup(data.categories);
         $scope.foldersById = buildLookup(data.folders);
         return loadContents();

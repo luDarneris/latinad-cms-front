@@ -42,23 +42,53 @@
           active="isTypeFilterActive(filter.value)"
           on-click="setTypeFilter(filter.value)">
         </filter-pill>
+
+        <span class="mx-1 hidden h-8 w-px shrink-0 bg-border md:block"></span>
+
+        <app-select
+          label="Filtrar por carpeta"
+          name="folderFilter"
+          placeholder="Todas las carpetas"
+          model="contentFilters.folderId"
+          options="folders"
+          value-field="id"
+          label-field="name"
+          on-change="applyFilters('folderId', value)">
+        </app-select>
+
+        <app-select
+          label="Filtrar por categoria"
+          name="categoryFilter"
+          placeholder="Todas las categorias"
+          model="contentFilters.categoryId"
+          options="categories"
+          value-field="id"
+          label-field="name"
+          on-change="applyFilters('categoryId', value)">
+        </app-select>
       </div>
     </section>
 
     <section
-      class="mb-4 flex justify-end gap-2"
-      ng-if="!isLoading && !errorMessage && contents.length">
-      <smol-button
-        icon="{{archiveIcon}}"
-        label="Archivar seleccionados">
-      </smol-button>
+      class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+      ng-if="!isLoading && !errorMessage">
+      <p class="text-sm font-semibold text-text-muted">
+        {{contents.length}} resultado{{contents.length === 1 ? '' : 's'}} encontrado{{contents.length === 1 ? '' : 's'}}
+      </p>
 
-      <app-button
-        label="{{isSelectionMode ? 'Cancelar seleccion' : 'Seleccionar'}}"
-        full-width="false"
-        variant="secondary"
-        on-click="toggleSelectionMode()">
-      </app-button>
+      <div class="flex justify-end gap-2" ng-if="contents.length">
+        <smol-button
+          icon="{{archiveIcon}}"
+          label="Archivar seleccionados">
+        </smol-button>
+
+        <app-button
+          label="{{isSelectionMode ? 'Cancelar seleccion' : 'Seleccionar'}}"
+          full-width="false"
+          variant="secondary"
+          on-click="toggleSelectionMode()">
+        </app-button>
+      </div>
     </section>
 
     <section
