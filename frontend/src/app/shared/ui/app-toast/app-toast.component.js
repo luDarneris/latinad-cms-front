@@ -1,5 +1,6 @@
 import angular from "angular";
 import errorIcon from "../../../../assets/icons/error.svg";
+import "./app-toast.component.css";
 
 angular.module("latinadCmsApp").component("appToast", {
   bindings: {
