@@ -1,29 +1,52 @@
 <div class="min-h-screen bg-bg text-text">
-  <header class="border-b border-border bg-surface px-4 py-4 md:px-6 lg:px-8">
-    <div class="flex items-center justify-between gap-4">
-      <div>
-        <p class="text-xs font-semibold uppercase text-brand">LatinAd CMS</p>
-        <h1 class="text-xl font-semibold text-text">Contenidos</h1>
-      </div>
-
-      <app-button
-        label="Salir"
-        icon="{{signOutIcon}}"
-        icon-position="right"
-        full-width="false"
-        on-click="logout()">
-      </app-button>
-    </div>
-  </header>
+  <topbar
+    logo="{{logoCms}}"
+    user="user"
+    sign-out-icon="{{signOutIcon}}"
+    on-logout="logout()">
+  </topbar>
 
   <main class="px-4 py-6 md:px-6 lg:px-8">
-    <section class="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+    <section class="mb-5 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
       <div>
-        <h2 class="text-2xl font-semibold text-text">Biblioteca de piezas</h2>
-        <p class="mt-1 text-sm text-text-muted">
-          {{contents.length}} contenidos cargados desde la API mock.
-        </p>
+        <h2 class="text-2xl font-semibold text-text">Biblioteca de contenido</h2>
       </div>
+    </section>
+
+    <section class="mb-6">
+      <div class="relative">
+        <img
+          class="pointer-events-none absolute left-4 top-1/2 size-6 -translate-y-1/2 opacity-50 md:left-5 md:size-7"
+          ng-src="{{searchIcon}}"
+          alt="">
+
+        <input
+          class="h-14 w-full rounded-2xl border border-border bg-surface pl-13 pr-5 text-base font-medium text-text shadow-sm outline-none transition placeholder:text-text-muted/70 focus:border-brand focus:shadow-md md:h-16 md:pl-16 md:pr-6 md:text-xl"
+          type="search"
+          placeholder="Buscar contenido..."
+          ng-model="contentFilters.search"
+          ng-model-options="{ debounce: 250 }"
+          ng-change="applyFilters()">
+      </div>
+
+      <div class="mt-4 flex gap-2 overflow-x-auto pb-1 md:gap-3">
+        <filter-pill
+          ng-repeat="filter in typeFilters track by filter.value"
+          label="{{filter.label}}"
+          active="isTypeFilterActive(filter.value)"
+          on-click="setTypeFilter(filter.value)">
+        </filter-pill>
+      </div>
+    </section>
+
+    <section
+      class="mb-4 flex justify-end"
+      ng-if="!isLoading && !errorMessage && contents.length">
+      <app-button
+        label="{{isSelectionMode ? 'Cancelar seleccion' : 'Seleccionar'}}"
+        full-width="false"
+        on-click="toggleSelectionMode()">
+      </app-button>
     </section>
 
     <section
@@ -53,7 +76,7 @@
     <div
       class="rounded-lg border border-border bg-surface px-4 py-10 text-center text-sm text-text-muted"
       ng-if="!isLoading && !errorMessage && !contents.length">
-      No hay contenidos para mostrar.
+      No hay contenidos que coincidan con la busqueda o el filtro activo.
     </div>
 
     <section
@@ -63,7 +86,8 @@
         ng-repeat="content in contents track by content.id"
         content="content"
         category-name="{{getCategoryName(content.category_id)}}"
-        folder-name="{{getFolderName(content.folder_id)}}">
+        folder-name="{{getFolderName(content.folder_id)}}"
+        show-checkbox="isSelectionMode">
       </content-card>
     </section>
   </main>

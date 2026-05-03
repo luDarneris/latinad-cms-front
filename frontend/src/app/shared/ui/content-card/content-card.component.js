@@ -8,7 +8,8 @@ angular.module("latinadCmsApp").component("contentCard", {
   bindings: {
     categoryName: "@",
     content: "<",
-    folderName: "@"
+    folderName: "@",
+    showCheckbox: "<"
   },
   controller: function () {
     this.calendarIcon = calendarIcon;
@@ -44,6 +45,15 @@ angular.module("latinadCmsApp").component("contentCard", {
     <article
       class="group relative overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition duration-300 ease-out hover:-translate-y-1 hover:border-brand-light hover:shadow-xl hover:shadow-brand/10">
       <div class="relative aspect-[4/3] overflow-hidden bg-gray-light">
+        <div
+          class="absolute right-3 top-3 z-10 rounded-lg bg-white/85 p-1 shadow-sm backdrop-blur"
+          ng-if="$ctrl.showCheckbox">
+          <app-checkbox
+            checked="false"
+            label="Seleccionar {{$ctrl.content.name}}">
+          </app-checkbox>
+        </div>
+
         <img
           ng-if="!$ctrl.isVideo()"
           class="h-full w-full object-cover transition duration-500 ease-out group-hover:scale-105"
@@ -63,7 +73,9 @@ angular.module("latinadCmsApp").component("contentCard", {
           </span>
         </div>
 
-        <div class="absolute left-3 top-3 flex items-center gap-2">
+        <div
+          class="absolute left-3 top-3 flex items-center gap-2"
+          ng-class="$ctrl.showCheckbox ? 'max-w-[calc(100%-4.75rem)]' : 'max-w-[calc(100%-1.5rem)]'">
           <span class="rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-text shadow-sm backdrop-blur">
             {{$ctrl.getTypeLabel()}}
           </span>

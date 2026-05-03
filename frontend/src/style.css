@@ -44,7 +44,9 @@
 
 @layer components {
   app-button,
-  app-input {
+  app-checkbox,
+  app-input,
+  filter-pill {
     display: block;
   }
 }
