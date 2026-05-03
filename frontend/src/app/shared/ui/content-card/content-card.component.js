@@ -46,7 +46,7 @@ angular.module("latinadCmsApp").component("contentCard", {
       class="group relative overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition duration-300 ease-out hover:-translate-y-1 hover:border-brand-light hover:shadow-xl hover:shadow-brand/10">
       <div class="relative aspect-[4/3] overflow-hidden bg-gray-light">
         <div
-          class="absolute right-3 top-3 z-10 rounded-lg bg-white/85 p-1 shadow-sm backdrop-blur"
+          class="absolute right-3 top-3 z-10"
           ng-if="$ctrl.showCheckbox">
           <app-checkbox
             checked="false"

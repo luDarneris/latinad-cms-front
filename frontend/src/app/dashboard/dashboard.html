@@ -7,21 +7,27 @@
   </topbar>
 
   <main class="px-4 py-6 md:px-6 lg:px-8">
-    <section class="mb-5 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+    <section class="mb-5 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
       <div>
         <h2 class="text-2xl font-semibold text-text">Biblioteca de contenido</h2>
       </div>
+
+      <app-button
+        label="Crear contenido"
+        icon="{{addIcon}}"
+        full-width="false">
+      </app-button>
     </section>
 
     <section class="mb-6">
       <div class="relative">
         <img
-          class="pointer-events-none absolute left-4 top-1/2 size-6 -translate-y-1/2 opacity-50 md:left-5 md:size-7"
+          class="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 opacity-50 md:left-5 md:size-6"
           ng-src="{{searchIcon}}"
           alt="">
 
         <input
-          class="h-14 w-full rounded-2xl border border-border bg-surface pl-13 pr-5 text-base font-medium text-text shadow-sm outline-none transition placeholder:text-text-muted/70 focus:border-brand focus:shadow-md md:h-16 md:pl-16 md:pr-6 md:text-xl"
+          class="h-12 w-full rounded-2xl border border-border bg-surface pl-12 pr-5 text-sm font-medium text-text shadow-sm outline-none transition placeholder:text-text-muted/70 focus:border-brand focus:shadow-md md:h-13 md:pl-14 md:pr-6 md:text-base"
           type="search"
           placeholder="Buscar contenido..."
           ng-model="contentFilters.search"
@@ -40,11 +46,17 @@
     </section>
 
     <section
-      class="mb-4 flex justify-end"
+      class="mb-4 flex justify-end gap-2"
       ng-if="!isLoading && !errorMessage && contents.length">
+      <smol-button
+        icon="{{archiveIcon}}"
+        label="Archivar seleccionados">
+      </smol-button>
+
       <app-button
         label="{{isSelectionMode ? 'Cancelar seleccion' : 'Seleccionar'}}"
         full-width="false"
+        variant="secondary"
         on-click="toggleSelectionMode()">
       </app-button>
     </section>

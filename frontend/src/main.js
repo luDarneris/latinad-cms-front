@@ -13,6 +13,7 @@ import "./app/shared/ui/app-checkbox/app-checkbox.component";
 import "./app/shared/ui/app-input/app-input.component";
 import "./app/shared/ui/content-card/content-card.component";
 import "./app/shared/ui/filter-pill/filter-pill.component";
+import "./app/shared/ui/smol-button/smol-button.component";
 import "./app/shared/ui/topbar/topbar.component";
 import "./app/login/login.controller";
 import "./app/dashboard/dashboard.controller";

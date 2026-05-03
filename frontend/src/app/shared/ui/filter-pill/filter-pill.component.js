@@ -8,7 +8,7 @@ angular.module("latinadCmsApp").component("filterPill", {
   },
   controller: function () {
     this.getClasses = function () {
-      var baseClasses = "h-9 rounded-full border px-4 text-sm font-semibold leading-none shadow-sm transition md:h-10 md:px-5";
+      var baseClasses = "h-7 rounded-full border px-3 text-xs font-semibold leading-none shadow-sm transition md:h-8 md:px-3.5";
 
       if (this.active) {
         return baseClasses + " border-brand bg-brand text-text-invert shadow-brand/20";

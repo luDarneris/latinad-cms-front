@@ -26,9 +26,9 @@ angular.module("latinadCmsApp").component("appCheckbox", {
         ng-change="$ctrl.handleChange()">
 
       <span
-        class="flex size-7 shrink-0 items-center justify-center rounded-md border border-border bg-white shadow-sm transition peer-checked:border-brand peer-checked:bg-brand peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand peer-disabled:cursor-not-allowed peer-disabled:opacity-60">
+        class="flex size-6 shrink-0 items-center justify-center rounded-md border border-border bg-white shadow-sm transition peer-checked:border-brand peer-checked:bg-brand peer-disabled:cursor-not-allowed peer-disabled:opacity-60">
         <svg
-          class="size-4 text-white transition"
+          class="size-3.5 text-white transition"
           viewBox="0 0 20 20"
           fill="none"
           aria-hidden="true"

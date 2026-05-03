@@ -1,4 +1,6 @@
 import angular from "angular";
+import addIcon from "../../assets/icons/add.svg";
+import archiveIcon from "../../assets/icons/archive.svg";
 import logoCms from "../../assets/logo-cms.svg";
 import searchIcon from "../../assets/icons/search.svg";
 import signOutIcon from "../../assets/icons/sign-out.svg";
@@ -6,6 +8,8 @@ import signOutIcon from "../../assets/icons/sign-out.svg";
 function DashboardController($scope, $state, AuthService, ApiService) {
   var lastContentRequestId = 0;
 
+  $scope.addIcon = addIcon;
+  $scope.archiveIcon = archiveIcon;
   $scope.logoCms = logoCms;
   $scope.searchIcon = searchIcon;
   $scope.signOutIcon = signOutIcon;

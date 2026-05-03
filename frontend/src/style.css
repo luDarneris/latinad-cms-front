@@ -46,7 +46,8 @@
   app-button,
   app-checkbox,
   app-input,
-  filter-pill {
+  filter-pill,
+  smol-button {
     display: block;
   }
 }
