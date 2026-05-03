@@ -215,6 +215,16 @@
           label-field="name"
           on-change="applyFilters('categoryId', value)">
         </app-select>
+
+        <span class="mx-1 hidden h-8 w-px shrink-0 bg-border md:block"></span>
+
+        <app-button
+          label="Limpiar filtros"
+          full-width="false"
+          variant="secondary"
+          disabled="!hasActiveFilters()"
+          on-click="clearPersistedFilters()">
+        </app-button>
       </div>
     </section>
 
@@ -292,8 +302,8 @@
         category-name="{{getCategoryName(content.category_id)}}"
         folder-name="{{getFolderName(content.folder_id)}}"
         selected="isContentSelected(content.id)"
-        show-checkbox="isSelectionMode"
-        selection-disabled="content.archived || isArchivingContents"
+        show-checkbox="isSelectionMode && !content.archived"
+        selection-disabled="isArchivingContents"
         on-selection-change="setContentSelected(content, selected)">
       </content-card>
     </section>

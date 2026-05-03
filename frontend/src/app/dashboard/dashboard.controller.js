@@ -5,7 +5,15 @@ import logoCms from "../../assets/logo-cms.svg";
 import searchIcon from "../../assets/icons/search.svg";
 import signOutIcon from "../../assets/icons/sign-out.svg";
 
-function DashboardController($scope, $state, AuthService, ApiService) {
+var CONTENT_FILTERS_KEY = "latinad_cms_content_filters";
+var VALID_CONTENT_TYPES = {
+  "": true,
+  image: true,
+  video: true,
+  archived: true
+};
+
+function DashboardController($scope, $state, $window, AuthService, ApiService) {
   var lastContentRequestId = 0;
 
   $scope.addIcon = addIcon;
@@ -45,12 +53,7 @@ function DashboardController($scope, $state, AuthService, ApiService) {
       value: "video"
     }
   ];
-  $scope.contentFilters = {
-    search: "",
-    type: "",
-    categoryId: "",
-    folderId: ""
-  };
+  $scope.contentFilters = getInitialContentFilters();
   $scope.typeFilters = [
     {
       label: "Todos",
@@ -95,6 +98,7 @@ function DashboardController($scope, $state, AuthService, ApiService) {
   $scope.setTypeFilter = function (filterValue) {
     exitSelectionMode();
     $scope.contentFilters.type = filterValue;
+    persistContentFilters();
     loadContents();
   };
 
@@ -105,6 +109,23 @@ function DashboardController($scope, $state, AuthService, ApiService) {
       $scope.contentFilters[filterKey] = value || "";
     }
 
+    persistContentFilters();
+    loadContents();
+  };
+
+  $scope.hasActiveFilters = function () {
+    return Boolean(
+      String($scope.contentFilters.search || "").trim() ||
+      $scope.contentFilters.type ||
+      $scope.contentFilters.categoryId ||
+      $scope.contentFilters.folderId
+    );
+  };
+
+  $scope.clearPersistedFilters = function () {
+    exitSelectionMode();
+    $scope.contentFilters = getDefaultContentFilters();
+    removePersistedContentFilters();
     loadContents();
   };
 
@@ -350,6 +371,117 @@ function DashboardController($scope, $state, AuthService, ApiService) {
     $scope.clearSelection();
   }
 
+  function getDefaultContentFilters() {
+    return {
+      search: "",
+      type: "",
+      categoryId: "",
+      folderId: ""
+    };
+  }
+
+  function normalizePersistedOptionalId(value) {
+    var normalized;
+
+    if (value === "" || value === null || typeof value === "undefined") {
+      return "";
+    }
+
+    normalized = Number(value);
+
+    if (!Number.isFinite(normalized)) {
+      return "";
+    }
+
+    return normalized;
+  }
+
+  function sanitizeContentFilters(filters) {
+    var sanitized = getDefaultContentFilters();
+
+    if (!filters || typeof filters !== "object") {
+      return sanitized;
+    }
+
+    sanitized.search = typeof filters.search === "string" ? filters.search : "";
+    sanitized.type = Object.prototype.hasOwnProperty.call(VALID_CONTENT_TYPES, filters.type)
+      ? filters.type
+      : "";
+    sanitized.categoryId = normalizePersistedOptionalId(filters.categoryId);
+    sanitized.folderId = normalizePersistedOptionalId(filters.folderId);
+
+    return sanitized;
+  }
+
+  function getStoredContentFilters() {
+    var storedFilters;
+
+    try {
+      storedFilters = $window.localStorage.getItem(CONTENT_FILTERS_KEY);
+    } catch (error) {
+      return null;
+    }
+
+    if (!storedFilters) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(storedFilters);
+    } catch (error) {
+      removePersistedContentFilters();
+      return null;
+    }
+  }
+
+  function getInitialContentFilters() {
+    return sanitizeContentFilters(getStoredContentFilters());
+  }
+
+  function persistContentFilters() {
+    try {
+      $window.localStorage.setItem(
+        CONTENT_FILTERS_KEY,
+        JSON.stringify(sanitizeContentFilters($scope.contentFilters))
+      );
+    } catch (error) {
+      return;
+    }
+  }
+
+  function removePersistedContentFilters() {
+    try {
+      $window.localStorage.removeItem(CONTENT_FILTERS_KEY);
+    } catch (error) {
+      return;
+    }
+  }
+
+  function hasItemWithId(items, id) {
+    return (items || []).some(function (item) {
+      return String(item.id) === String(id);
+    });
+  }
+
+  function reconcileContentFiltersWithOptions() {
+    var filters = $scope.contentFilters;
+    var changed = false;
+
+    if (filters.categoryId && !hasItemWithId($scope.categories, filters.categoryId)) {
+      filters.categoryId = "";
+      changed = true;
+    }
+
+    if (filters.folderId && !hasItemWithId($scope.folders, filters.folderId)) {
+      filters.folderId = "";
+      changed = true;
+    }
+
+    if (changed) {
+      persistContentFilters();
+    }
+  }
+
   function getEmptyCreateContentForm() {
     return {
       name: "",
@@ -518,6 +650,7 @@ function DashboardController($scope, $state, AuthService, ApiService) {
         $scope.folders = data.folders || [];
         $scope.categoriesById = buildLookup(data.categories);
         $scope.foldersById = buildLookup(data.folders);
+        reconcileContentFiltersWithOptions();
         return loadContents();
       })
       .catch(function (error) {
@@ -540,6 +673,6 @@ function DashboardController($scope, $state, AuthService, ApiService) {
   loadDashboardData();
 }
 
-DashboardController.$inject = ["$scope", "$state", "AuthService", "ApiService"];
+DashboardController.$inject = ["$scope", "$state", "$window", "AuthService", "ApiService"];
 
 angular.module("latinadCmsApp").controller("DashboardController", DashboardController);
