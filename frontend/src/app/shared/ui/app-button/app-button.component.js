@@ -22,13 +22,13 @@ angular.module("latinadCmsApp").component("appButton", {
 
     this.getButtonClasses = function () {
       var widthClasses = this.isFullWidth() ? " w-full" : "";
-      var baseClasses = "inline-flex items-center justify-center gap-2 rounded-md px-4 py-2.5 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-60";
+      var baseClasses = "inline-flex items-center justify-center gap-2 font-medium transition disabled:cursor-not-allowed disabled:opacity-60";
 
       if (this.variant === "secondary") {
-        return baseClasses + " border border-border bg-surface text-text-muted hover:border-brand-light hover:text-brand" + widthClasses;
+        return baseClasses + " rounded-full px-3.5 py-2 text-sm border border-border bg-surface text-text-muted hover:border-brand-light hover:text-brand" + widthClasses;
       }
 
-      return baseClasses + " bg-brand text-text-invert hover:bg-brand-hover" + widthClasses;
+      return baseClasses + " rounded-md px-4 py-2.5 text-sm bg-brand text-text-invert hover:bg-brand-hover" + widthClasses;
     };
 
     this.getIconClasses = function () {

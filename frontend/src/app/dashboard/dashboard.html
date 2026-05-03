@@ -88,11 +88,12 @@
       </p>
 
       <div class="flex justify-end gap-2" ng-if="contents.length">
-        <smol-button
-          icon="{{archiveIcon}}"
-          label="Archivar seleccionados"
+        <app-button
+          label="Archivar"
+          full-width="false"
+          variant="secondary"
           ng-if="isSelectionMode && getSelectedContentCount()">
-        </smol-button>
+        </app-button>
 
         <app-button
           label="{{areAllVisibleContentsSelected() ? 'Deseleccionar todo' : 'Seleccionar todo'}}"
@@ -103,7 +104,7 @@
         </app-button>
 
         <app-button
-          label="{{isSelectionMode ? 'Cancelar seleccion' : 'Seleccionar'}}"
+          label="{{isSelectionMode ? 'Cancelar selección' : 'Modo selección'}}"
           full-width="false"
           variant="secondary"
           on-click="toggleSelectionMode()">
