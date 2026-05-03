@@ -1,13 +1,8 @@
 <div class="min-h-screen bg-bg text-text">
   <app-toast
-    message="errorMessage"
-    on-close="clearErrorMessage()">
-  </app-toast>
-
-  <app-toast
-    message="successMessage"
-    type="success"
-    on-close="clearSuccessMessage()">
+    message="getDashboardToastMessage()"
+    type="{{getDashboardToastType()}}"
+    on-close="clearDashboardToastMessage()">
   </app-toast>
 
   <topbar

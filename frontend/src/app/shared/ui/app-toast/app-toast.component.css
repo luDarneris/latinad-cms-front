@@ -2,6 +2,11 @@
   animation: toast-slide-in 180ms ease-out both;
 }
 
+.toast-slide-out {
+  animation: toast-slide-out 240ms ease-in both;
+  pointer-events: none;
+}
+
 @keyframes toast-slide-in {
   from {
     opacity: 0;
@@ -11,5 +16,17 @@
   to {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+
+@keyframes toast-slide-out {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(1rem);
   }
 }

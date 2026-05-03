@@ -122,6 +122,23 @@ function DashboardController($scope, $state, AuthService, ApiService) {
     $scope.successMessage = "";
   };
 
+  $scope.getDashboardToastMessage = function () {
+    return $scope.errorMessage || $scope.successMessage;
+  };
+
+  $scope.getDashboardToastType = function () {
+    return $scope.errorMessage ? "error" : "success";
+  };
+
+  $scope.clearDashboardToastMessage = function () {
+    if ($scope.errorMessage) {
+      $scope.clearErrorMessage();
+      return;
+    }
+
+    $scope.clearSuccessMessage();
+  };
+
   $scope.openCreateContentModal = function () {
     $scope.createContentWasSubmitted = false;
     $scope.createContentErrors = {};
