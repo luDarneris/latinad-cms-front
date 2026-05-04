@@ -71,7 +71,10 @@ http://localhost:5173
 ### Alcance de la implementación
 
 Parte obligatoria: parte 1 y parte 2 implementadas completas. 
+
 Bonus: archivado masivo y persistencia de filtros implementados.
+
+*Aclaración: reemplacé la preview de la previsualiación de los videos en las tarjetas de contendido por un icono porque como no traen por defecto un thumbnail tardaban muchisimo en cargar.
 
 ### Decisiones de stack
 
@@ -93,7 +96,7 @@ Como el proyecto está hecho en Angular.js, uso un interceptor de $http, que es 
 
 ¿Dónde vive el estado de los filtros? ¿Por qué? 
 
-El estado de los filtros vive en el DashboardController porque los filtros pertenecen solo a esa pantalla, no son estado global ni se comparten con otras vistas. En el dashboard se muestran, actualizan, se arma la request y se renderizan los resultados. 
+El estado activo de los filtros vive en el DashboardController porque los filtros pertenecen solo a esa pantalla, no son estado global ni se comparten con otras vistas. En el dashboard se muestran, actualizan, se arma la request y se renderizan los resultados. Posteriormente se implemento la persistencia de los mismos guardándolos en localstorage para que sobrevivan a recargas
 
 ¿Cómo manejás estado de carga y errores? 
 
