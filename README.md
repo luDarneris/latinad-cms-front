@@ -68,6 +68,11 @@ http://localhost:5173
 
 ## Justificaciones y decisiones
 
+### Alcance de la implementación
+
+Parte obligatoria: parte 1 y parte 2 implementadas completas. 
+Bonus: archivado masivo y persistencia de filtros implementados.
+
 ### Decisiones de stack
 
 Decidí trabajar con AngularJS 1.x tomando el ejercicio también como una introducción al framework. No tenía experiencia previa con AngularJS, así que fue un desafío extra, pero me pareció una buena oportunidad para ubicarme en sus características generales.
