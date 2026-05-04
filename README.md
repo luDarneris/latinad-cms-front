@@ -74,7 +74,7 @@ Parte obligatoria: parte 1 y parte 2 implementadas completas.
 
 Bonus: archivado masivo y persistencia de filtros implementados.
 
-*Aclaración: reemplacé la preview de la previsualiación de los videos en las tarjetas de contendido por un icono porque como no traen por defecto un thumbnail tardaban muchisimo en cargar.
+*Aclaración: Para los contenidos que son tipo video, decidí no renderizar el mp4 como preview dentro de la  tarjeta porque el mock no trae thumbnail o una imagen de previsualización y tardaban muchisimo en cargar, asi que en su lugar se muestra un icono.
 
 ### Decisiones de stack
 
