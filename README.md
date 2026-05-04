@@ -92,7 +92,7 @@ El estado de los filtros vive en el DashboardController porque los filtros perte
 
 ¿Cómo manejás estado de carga y errores? 
 
-Manejamos el estado de carga con flags de estado que triggerean distintos comportamientos que permiten inferir que se están cargando los datos, por ejemplo para la carga inicial de contenidos en el Dashboard si el flag isLoading está en true, se muestran skeletons y una animación de pulso que provee Tailwind. Si falla la carga de contenidos desde la API, guardo el error en un estado y lo muestro en un toast, además de que no se renderiza la lista.
+Manejé el estado de carga con flags de estado que triggerean distintos comportamientos que permiten inferir que se están cargando los datos, por ejemplo para la carga inicial de contenidos en el Dashboard si el flag isLoading está en true, se muestran skeletons y una animación de pulso que provee Tailwind. Si falla la carga de contenidos desde la API, guardo el error en un estado y lo muestro en un toast de error, además de que no se renderiza la lista. Mismo con los botones que lanzan peticiónes, se deshabilitan y cambian su etiqueta a una referente a que se esta esperando que se procese la petición. 
 
 ¿Cómo estructurás los componentes?
 
@@ -102,7 +102,7 @@ Después de investigar la estructura más común en proyectos Angular.js intent�
 
 ¿Validación en tiempo real o al enviar? ¿Por qué? 
 
-Elegí validar al enviar porque me pareció una opción simple y menos invasiva para este caso. Dejo que el usuario complete el formulario tranquilo y recién muestro los errores cuando intenta guardar. Antes de pegarle a la API valido desde el front los campos obligatorios, que la URL tenga formato correcto, etc, para evitar requests innecesarios.
+Elegi validar antes de enviar la petición como tal, es decir, el usuario no ve los errores mientras escribe al sacar el foco el input sino recién al apretar el botón para enviar. Esto por una cuestión de no ser invasivo con los mensajes de error, por simple preferencia personal dado que no se requiere del back para validar porque son reglas locales. De todas maneras, no se envían peticiones innecesarias en el caso de no cumplir las reglas locales. 
 
  ¿Cómo manejás feedback de éxito y error?
 
@@ -110,7 +110,7 @@ Manejo el feedback con estados de carga y toasts. Mientras se guarda, el botón 
 
 ### Decisiones de UX
 
-Centralicé casi todo el flujo en el dashboard para que el usuario no pierda contexto, desde ahí puede ver la biblioteca, buscar, filtrar, seleccionar contenidos y ejecutar acciones principales.
+Centralicé casi todo el flujo en el dashboard para que el usuario no pierda contexto, desde ahí puede ver la biblioteca, buscar, filtrar, seleccionar contenidos y ejecutar las acciones principales.
 
 Las únicas instancias que interrumpen esa vista son la creación de un nuevo contenido y la confirmación de archivado. En ambos casos lo resolví con modales porque son momentos donde tiene sentido enfocar la atención del usuario en una acción puntual.
 
@@ -118,9 +118,7 @@ Todo esto está acompañado por feedback en los momentos clave, para que el usua
 
 ### Qué harías distinto con más tiempo
 
-Con más tiempo revisaría cómo separar mejor las responsabilidades del controller del dashboard, porque terminó quedando bastante cargado.
-
-También implementaría un modal para ver el detalle de un contenido al hacer click sobre una tarjeta específica. 
+Con más tiempo revisaría cómo separar mejor las responsabilidades del controller del dashboard, porque terminó quedando bastante cargado. También implementaría un modal para ver el detalle de un contenido al hacer click sobre una tarjeta específica. 
 
 Además, agregaría paginado o una carga progresiva. Para el volumen de datos del mock actual la solución cumple, pero si la lista de contenidos fuera mucho más grande sería indispensable.
 
