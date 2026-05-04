@@ -17,6 +17,30 @@ angular.module("latinadCmsApp").component("appSelect", {
     onChange: "&"
   },
   controller: function () {
+    this.placeholderOption = {
+      isPlaceholder: true
+    };
+    this.visibleOptions = [];
+
+    this.refreshVisibleOptions = function () {
+      if (this.showPlaceholder === false) {
+        this.visibleOptions = this.options || [];
+        return;
+      }
+
+      this.visibleOptions = [this.placeholderOption].concat(this.options || []);
+    };
+
+    this.$onInit = function () {
+      this.refreshVisibleOptions();
+    };
+
+    this.$onChanges = function (changes) {
+      if (changes.options || changes.showPlaceholder) {
+        this.refreshVisibleOptions();
+      }
+    };
+
     this.getOptionValue = function (option) {
       if (option && option.isPlaceholder) {
         return "";
@@ -31,18 +55,6 @@ angular.module("latinadCmsApp").component("appSelect", {
       }
 
       return option && option[this.labelField || "label"];
-    };
-
-    this.getOptions = function () {
-      if (this.showPlaceholder === false) {
-        return this.options || [];
-      }
-
-      return [
-        {
-          isPlaceholder: true
-        }
-      ].concat(this.options || []);
     };
 
     this.handleChange = function () {
@@ -69,7 +81,7 @@ angular.module("latinadCmsApp").component("appSelect", {
           name="{{$ctrl.name}}"
           ng-model="$ctrl.model"
           ng-disabled="$ctrl.disabled"
-          ng-options="$ctrl.getOptionValue(option) as $ctrl.getOptionLabel(option) for option in $ctrl.getOptions()"
+          ng-options="$ctrl.getOptionValue(option) as $ctrl.getOptionLabel(option) for option in $ctrl.visibleOptions"
           ng-change="$ctrl.handleChange()">
         </select>
 

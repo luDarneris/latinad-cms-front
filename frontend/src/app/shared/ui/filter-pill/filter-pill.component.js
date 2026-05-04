@@ -18,21 +18,28 @@ angular.module("latinadCmsApp").component("filterPill", {
       textMuted: "#5f6f7c",
       textInvert: "#ffffff"
     };
+    this.activeStyles = {
+      "background-color": this.colors.brand,
+      "border-color": this.colors.brand,
+      color: this.colors.textInvert
+    };
+    this.defaultStyles = {
+      "background-color": this.colors.surface,
+      "border-color": this.colors.border,
+      color: this.colors.textMuted
+    };
+    this.hoverStyles = {
+      "background-color": this.colors.surface,
+      "border-color": this.colors.brandLight,
+      color: this.colors.brand
+    };
 
     this.getButtonStyles = function () {
       if (this.active) {
-        return {
-          "background-color": this.colors.brand,
-          "border-color": this.colors.brand,
-          color: this.colors.textInvert
-        };
+        return this.activeStyles;
       }
 
-      return {
-        "background-color": this.colors.surface,
-        "border-color": this.isHovered ? this.colors.brandLight : this.colors.border,
-        color: this.isHovered ? this.colors.brand : this.colors.textMuted
-      };
+      return this.isHovered ? this.hoverStyles : this.defaultStyles;
     };
 
     this.setHovered = function (isHovered) {

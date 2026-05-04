@@ -13,6 +13,13 @@ angular.module("latinadCmsApp").component("appButton", {
     variant: "@"
   },
   controller: function () {
+    this.emptyStyles = {};
+    this.activeSecondaryStyles = {
+      "background-color": "#62a8ea",
+      "border-color": "#62a8ea",
+      color: "#ffffff"
+    };
+
     this.isFullWidth = function () {
       return this.fullWidth !== false;
     };
@@ -46,14 +53,10 @@ angular.module("latinadCmsApp").component("appButton", {
 
     this.getButtonStyles = function () {
       if (this.variant === "secondary" && this.active) {
-        return {
-          "background-color": "#62a8ea",
-          "border-color": "#62a8ea",
-          color: "#ffffff"
-        };
+        return this.activeSecondaryStyles;
       }
 
-      return {};
+      return this.emptyStyles;
     };
 
     this.isIconRight = function () {

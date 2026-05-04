@@ -13,20 +13,22 @@ angular.module("latinadCmsApp").component("appTag", {
       text: "#000000",
       whiteSoft: "rgba(255, 255, 255, 0.9)"
     };
+    this.dangerStyles = {
+      "background-color": this.colors.dangerSoft,
+      color: this.colors.danger
+    };
+    this.defaultStyles = {
+      "background-color": this.colors.whiteSoft,
+      color: this.colors.text,
+      "backdrop-filter": "blur(8px)"
+    };
 
     this.getTagStyles = function () {
       if (this.variant === "danger") {
-        return {
-          "background-color": this.colors.dangerSoft,
-          color: this.colors.danger
-        };
+        return this.dangerStyles;
       }
 
-      return {
-        "background-color": this.colors.whiteSoft,
-        color: this.colors.text,
-        "backdrop-filter": "blur(8px)"
-      };
+      return this.defaultStyles;
     };
 
     this.hasIcon = function () {
