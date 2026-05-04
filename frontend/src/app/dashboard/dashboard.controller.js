@@ -549,7 +549,7 @@ function DashboardController($scope, $state, $window, AuthService, ApiService) {
     }
 
     if (type !== "image" && type !== "video") {
-      errors.type = "El tipo de archivo es obligatorio.";
+      errors.type = "El tipo es obligatorio.";
     }
 
     if (!url) {
